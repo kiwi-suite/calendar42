@@ -1,0 +1,14 @@
+{
+    "name": "fruit42/calendar42",
+    "type": "zend-module",
+    "require": {
+        "php": ">=5.5",
+        "zendframework/zendframework": "=2.5.0",
+        "fruit42/core42": "dev-feature/core2.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Calendar42": "src/"
+        }
+    }
+}
