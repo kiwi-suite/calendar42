@@ -19,8 +19,6 @@ class CalendarController extends AbstractAdminController
      */
     public function indexAction()
     {
-        var_dump('calendar42');
-        die();
     }
 
     /**
