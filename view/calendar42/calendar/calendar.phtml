@@ -1,7 +1,7 @@
 <div class="wrapper-md bg-white b-b box-shadow">
     <h1 class="m-n font-thin h3">
         <span class="fa fa-calendar"></span>
-        <?= $this->translate('title.calendar.index', 'admin') ?>
+        <?= $this->translate('title.calendar', 'admin') ?>
     </h1>
 </div>
 
@@ -40,18 +40,18 @@
                 <div class="clearfix m-b">
                     <button type="button" tooltip="Double click on calendar day to create event"
                             class="btn btn-sm btn-primary btn-addon" ng-click="addEvent()">
-                        <i class="fa fa-plus"></i> Add Event
+                        <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
                     </button>
                     <div class="pull-right">
-                        <button type="button" class="btn btn-sm btn-default" ng-click="today()">today</button>
+                        <button type="button" class="btn btn-sm btn-default" ng-click="today()"><?= $this->translate('button.today', 'admin') ?></button>
                         <div class="btn-group m-l-xs">
-                            <button class="btn btn-sm btn-default" ng-click="changeView('agendaDay')">Day</button>
-                            <button class="btn btn-sm btn-default" ng-click="changeView('agendaWeek')">Week</button>
-                            <button class="btn btn-sm btn-default" ng-click="changeView('month')">Month</button>
+                            <button class="btn btn-sm btn-default" ng-click="changeView('agendaDay')"><?= $this->translate('button.day', 'admin') ?></button>
+                            <button class="btn btn-sm btn-default" ng-click="changeView('agendaWeek')"><?= $this->translate('button.week', 'admin') ?></button>
+                            <button class="btn btn-sm btn-default" ng-click="changeView('month')"><?= $this->translate('button.month', 'admin') ?></button>
                         </div>
                         <button type="button" class="btn btn-sm btn-default m-l-xs" ui-toggle-class="show"
                                 target="#calendarList">
-                            <i class="fa fa-bars"></i> List
+                            <i class="fa fa-bars"></i> <?= $this->translate('button.list', 'admin') ?>
                         </button>
                     </div>
                 </div>

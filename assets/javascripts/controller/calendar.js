@@ -42,10 +42,6 @@ angular.module('admin42')
 
         $scope.eventResize = function (event, delta, revertFunc, jsEvent, ui, view) {
 
-            if (event.allDay && moment(event.start).format('YYYY-MM-DD') == moment(event.end).subtract(1, 'day').format('YYYY-MM-DD')) {
-                event.end = null;
-            }
-
             $scope.updateEvent(event, delta, revertFunc, jsEvent, ui, view);
 
             $timeout(function () {
@@ -65,7 +61,7 @@ angular.module('admin42')
         $scope.overlay = $('.fc-overlay');
         $scope.eventMouseover = function (event, jsEvent, view) {
             // copy event just for sanitized rollover - otherwise sanitized event will cause errors when dragging
-            $scope.event = sanitizeEventModel(angular.copy(event));
+            $scope.event = $scope.sanitizeEventModel(angular.copy(event));
             $scope.overlay.removeClass('left right top').find('.arrow').removeClass('left right top pull-up');
             var wrap = $(jsEvent.target).closest('.fc-event');
             var cal = wrap.closest('.calendar');
@@ -165,31 +161,32 @@ angular.module('admin42')
                 if (eventModel.$$hashKey === event.$$hashKey) {
                     eventModel.allDay = event.allDay;
                     eventModel.start = event.start;
-                    if (event.start) {
-                        eventModel.startTimestamp = moment(event.start).unix();
-                        eventModel.start = moment(event.start).format();
-                    }
                     eventModel.end = event.end;
-                    if (event.end) {
-                        eventModel.end = moment(event.end).format();
-                    }
+                    $scope.sanitizeEventModel(eventModel);
                 }
             });
         };
 
-        $scope.eventSources = getTestEventSources();
+        $scope.sanitizeEventModel = function(eventModel) {
 
-        function sanitizeEventModel(eventModel) {
             eventModel.start = moment(eventModel.start).format();
-            if (eventModel.start && !eventModel.startTimestamp) {
-                eventModel.startTimestamp = moment(eventModel.start).unix();
+            eventModel.startTimestamp = moment(eventModel.start).unix();
+
+            if (eventModel.allDay && moment(eventModel.start).format('YYYY-MM-DD') == moment(eventModel.end).subtract(1, 'day').format('YYYY-MM-DD')
+                ) {
+                eventModel.end = null;
             }
+
             if (eventModel.end) {
                 eventModel.end = moment(eventModel.end).format();
             }
+
             eventModel.className = ['b-l b-2x b-primary'];
+
             return eventModel;
-        }
+        };
+
+        $scope.eventSources = getTestEventSources();
 
         function getTestEventSources() {
 
@@ -250,7 +247,7 @@ angular.module('admin42')
             ];
 
             // transform api event list into angular-ui fullcallendar format
-            $scope.events.map(sanitizeEventModel);
+            $scope.events.map($scope.sanitizeEventModel);
 
             return [$scope.events];
         }

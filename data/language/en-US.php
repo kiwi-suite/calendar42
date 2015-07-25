@@ -2,9 +2,20 @@
 
 return [
 
-    'title.calendar.index'   => 'Calendar',
+    'title.calendar.list' => 'Calendars',
 
-    'label.calendar'         => 'Calendar',
+    'title.calendar'      => 'Calendar',
 
-    'button.message-key-add' => 'Add Calendar Entry',
+    'label.calendar'      => 'Calendar',
+
+    'button.today'        => 'Today',
+    'button.day'          => 'Day',
+    'button.week'         => 'Week',
+    'button.month'        => 'Month',
+
+    'button.list'         => 'Events List',
+
+    'button.event-add'    => 'Add Event',
+
+    'button.calendar-add' => 'Add Calendar',
 ];

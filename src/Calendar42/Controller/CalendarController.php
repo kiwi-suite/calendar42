@@ -17,8 +17,21 @@ class CalendarController extends AbstractAdminController
     /**
      *
      */
-    public function indexAction()
+    public function calendarAction()
     {
+        // TODO: return sources urls of calendar by id if set - otherwise all
+
+        return [
+            //'createEditForm' => $createEditForm,
+        ];
+    }
+
+    /**
+     *
+     */
+    public function listAction()
+    {
+        // TODO: list of calendars
     }
 
     /**
@@ -26,8 +39,7 @@ class CalendarController extends AbstractAdminController
      */
     public function detailAction()
     {
-        var_dump('calendar42');
-        die();
+        // TODO: edit form for calendar
     }
 
     /**
@@ -35,7 +47,6 @@ class CalendarController extends AbstractAdminController
      */
     public function deleteAction()
     {
-        var_dump('calendar42');
-        die();
+        // TODO: delete action for calendar
     }
 }
