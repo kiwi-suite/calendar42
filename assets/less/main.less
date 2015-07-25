@@ -1,6 +1,6 @@
 @import '../../../admin42/assets/less/_colors';
 @import '../../../admin42/assets/less/_mixins';
-//@import '../../../admin42/assets/less/_utilities';
+@import '../../../admin42/assets/less/_utilities';
 @import '../../../admin42/assets/less/_variables';
 
 @import (less) '../bower_components/fullcalendar/dist/fullcalendar.css';
@@ -9,3 +9,19 @@
 //@media print {
 //    @import (less) '../bower_components/fullcalendar/dist/fullcalendar.print.css';
 //}
+
+.calendar-list {
+
+    .event {
+
+        .b-primary;
+
+        &.light {
+
+            .form-control {
+
+                color: @text-color !important;
+            }
+        }
+    }
+}

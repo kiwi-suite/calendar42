@@ -64,9 +64,9 @@
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
-    border: none;
 
     .bg-primary;
+    .b-primary;
 }
 
 .fc-event-inner {
@@ -120,6 +120,21 @@
 
 .fc-overlay .pull-down {
     bottom: 11px;
+}
+
+.fc-event {
+
+    color: darken(rgb(255,255,255), 8%); // white or black
+    &:hover {
+        color: white; // white or black
+    }
+
+    &.light {
+        color: lighten(@text-color, 8%);; // white or black
+        &:hover {
+            color: @text-color; // white or black
+        }
+    }
 }
 
 .fc-event:hover,

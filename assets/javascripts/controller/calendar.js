@@ -11,7 +11,7 @@ angular.module('admin42')
         }
     })
 
-    .controller('CalendarController', function ($scope, $locale, $timeout, $log, toaster, uiCalendarConfig) {
+    .controller('CalendarController', function ($scope, $attrs, $locale, $timeout, $log, toaster, uiCalendarConfig) {
 
         $timeout(function () {
             for (var calendar in uiCalendarConfig.calendars) {
@@ -29,7 +29,7 @@ angular.module('admin42')
             $timeout(function () {
 
                 // TODO: add undo function to toast
-                toaster.pop('calendar', event.title, 'Updated Event Date');
+                toaster.pop('calendar', event.title, 'Moved Event');
                 //revertFunc();
                 //$scope.events.map(function(eventModel){
                 //    if(eventModel.$$hashKey === event.$$hashKey) {
@@ -47,7 +47,7 @@ angular.module('admin42')
             $timeout(function () {
 
                 // TODO: add undo function to toast
-                toaster.pop('calendar', event.title, 'Updated Event Duration');
+                toaster.pop('calendar', event.title, 'Changed Event Duration');
                 //revertFunc();
                 //$scope.events.map(function(eventModel){
                 //    if(eventModel.$$hashKey === event.$$hashKey) {
@@ -101,7 +101,8 @@ angular.module('admin42')
                     center: 'title',
                     right: 'next'
                 },
-                lang: $locale.id.split('-')[0],
+                //lang: $locale.id.split('-')[0],
+                lang: $attrs.activeLocale.split('-')[0],
                 //nextDayThreshold: '00:00',
                 timezone: 'local', // very essential to correctly preserve timezones between fullcalendar and angular
                 dayClick: $scope.dayClick,
@@ -181,7 +182,19 @@ angular.module('admin42')
                 eventModel.end = moment(eventModel.end).format();
             }
 
-            eventModel.className = ['b-l b-2x b-primary'];
+            if(eventModel.color) {
+                eventModel.borderColor = eventModel.borderColor ? eventModel.borderColor : eventModel.color;
+                eventModel.backgroundColor = eventModel.backgroundColor ? eventModel.backgroundColor : eventModel.color;
+            }
+
+            eventModel.style = '';
+            eventModel.style += eventModel.textColor ? 'color:'+eventModel.textColor+';' : '';
+            eventModel.style += eventModel.borderColor ? 'border-color:'+eventModel.borderColor+';' : '';
+            eventModel.style += eventModel.backgroundColor ? 'background-color:'+eventModel.backgroundColor+';' : '';
+
+            eventModel.listStyle = '';
+            eventModel.listStyle += eventModel.borderColor ? 'color:'+eventModel.borderColor+';' : '';
+            eventModel.listStyle += eventModel.borderColor ? 'border-color:'+eventModel.borderColor+';' : '';
 
             return eventModel;
         };
@@ -216,33 +229,49 @@ angular.module('admin42')
 
             $scope.events = [
                 {
-                    title: 'All Day',
-                    start: new Date(y, m, 1, 9),
-                    end: new Date(y, m, 1, 21),
+                    title: 'All Day Green',
+                    start: new Date(y, m, d-4, 9),
+                    end: new Date(y, m, d-4, 21), // exclusive
                     allDay: true,
-                    location: 'New York',
-                    info: 'All day event test - time truncated'
+                    location: 'Vienna',
+                    info: 'All day event test: time truncated',
+                    color: '#27ae60',
+                    className: ['dark'], // dark or light - should match darkness of color
+                    updateUrl: '', // url to send update to if changing title or confirming add/edit modal
+                    deleteUrl: '' // url to send delete action to
                 },
                 {
-                    title: 'Two days all day',
-                    start: new Date(y, m, 3),
-                    end: new Date(y, m, 4),
+                    title: 'Two whole days',
+                    start: new Date(y, m, d-5),
+                    end: new Date(y, m, d-3), // exclusive
                     allDay: true,
-                    location: 'London',
-                    info: 'Two days'
+                    location: 'Vienna',
+                    info: 'Two whole days',
+                    color: '#e74c3c',
+                    className: ['dark'], // dark or light - should match darkness of color
+                    updateUrl: '', // url to send update to if changing title or confirming add/edit modal
+                    deleteUrl: '' // url to send delete action to
                 },
                 {
                     title: 'Long Event Test',
                     start: moment(new Date(y, m, d - 5, 9, 30)).format('YYYY-MM-DD HH:mm:ssZ'),
-                    end: moment().format(), // needs to be formatted for angular view
+                    end: moment().add(1, 'day').format(), // needs to be formatted for angular view
                     allDay: true,
-                    location: 'HD City',
-                    info: 'Long event test - time truncated'
+                    location: 'Vienna',
+                    info: 'Long event test: times truncated',
+                    color: '#e67e22',
+                    className: ['dark'], // dark or light - should match darkness of color
+                    updateUrl: '', // url to send update to if changing title or confirming add/edit modal
+                    deleteUrl: '' // url to send delete action to
                 },
                 {
                     title: 'Simple',
                     start: moment().format(),
-                    info: 'Specific Date & Time'
+                    info: 'Specific Date & Time without end',
+                    color: '#f1c40f',
+                    className: ['light'], // dark or light - should match darkness of color
+                    updateUrl: '', // url to send update to if changing title or confirming add/edit modal
+                    deleteUrl: '' // url to send delete action to
                 }
             ];
 
