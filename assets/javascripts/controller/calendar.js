@@ -1,5 +1,17 @@
-angular.module('admin42').controller('CalendarController',
-    function ($scope, $locale, $timeout, $log, toaster, uiCalendarConfig) {
+angular.module('admin42')
+
+    .filter('exclusiveEndDate', function ($filter) {
+        // correct fullcalendar's exclusive end date by using a filter
+        var angularDateFilter = $filter('date');
+        return function (date, format, allDay) {
+            if (allDay) {
+                date = moment(date).subtract(1, 'day').format();
+            }
+            return angularDateFilter(date, format);
+        }
+    })
+
+    .controller('CalendarController', function ($scope, $locale, $timeout, $log, toaster, uiCalendarConfig) {
 
         $timeout(function () {
             for (var calendar in uiCalendarConfig.calendars) {
@@ -29,6 +41,10 @@ angular.module('admin42').controller('CalendarController',
         };
 
         $scope.eventResize = function (event, delta, revertFunc, jsEvent, ui, view) {
+
+            if (event.allDay && moment(event.start).format('YYYY-MM-DD') == moment(event.end).subtract(1, 'day').format('YYYY-MM-DD')) {
+                event.end = null;
+            }
 
             $scope.updateEvent(event, delta, revertFunc, jsEvent, ui, view);
 
@@ -90,6 +106,8 @@ angular.module('admin42').controller('CalendarController',
                     right: 'next'
                 },
                 lang: $locale.id.split('-')[0],
+                //nextDayThreshold: '00:00',
+                timezone: 'local', // very essential to correctly preserve timezones between fullcalendar and angular
                 dayClick: $scope.dayClick,
                 eventDragStart: $scope.eventDragStart,
                 eventDrop: $scope.eventDrop,
@@ -129,7 +147,7 @@ angular.module('admin42').controller('CalendarController',
             $scope.events.push({
                 title: 'New Event',
                 startTimestamp: momentDate.unix(),
-                start: momentDate.format(),
+                start: moment().format(), // add new event with current date time and current timezone
                 allDay: true,
                 className: ['b-l b-2x b-primary'],
                 stick: true // prevents new events from disappearing when switching views
@@ -145,10 +163,13 @@ angular.module('admin42').controller('CalendarController',
         $scope.updateEvent = function (event, delta, revertFunc, jsEvent, ui, view) {
             $scope.events.map(function (eventModel) {
                 if (eventModel.$$hashKey === event.$$hashKey) {
+                    eventModel.allDay = event.allDay;
+                    eventModel.start = event.start;
                     if (event.start) {
                         eventModel.startTimestamp = moment(event.start).unix();
                         eventModel.start = moment(event.start).format();
                     }
+                    eventModel.end = event.end;
                     if (event.end) {
                         eventModel.end = moment(event.end).format();
                     }
@@ -215,15 +236,15 @@ angular.module('admin42').controller('CalendarController',
                 },
                 {
                     title: 'Long Event Test',
-                    start: new Date(y, m, d - 5, 9, 30),
-                    end: moment().format(), // needs to be formatted for angular view
+                    start: moment(new Date(y, m, d - 5, 9, 30)).format('YYYY-MM-DD HH:mm:ssZ'),
+                    end: moment().startOf('day').startOf('hour').format(), // needs to be formatted for angular view
                     allDay: true,
                     location: 'HD City',
                     info: 'Long event test - time truncated'
                 },
                 {
                     title: 'Simple',
-                    start: new Date(y, m, 28, 13, 30),
+                    start: moment().format(),
                     info: 'Specific Date & Time'
                 }
             ];

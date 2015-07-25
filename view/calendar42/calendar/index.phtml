@@ -68,7 +68,7 @@
                                 <span class="ng-hide" ng-hide="event.allDay"> {{event.start | date:'shortTime'}}</span>
                             </div>
                             <div class="ng-hide" ng-show="event.end">
-                                <i class="icon-clock text-muted m-r-xs"></i> {{event.end | date:'mediumDate'}}
+                                <i class="icon-clock text-muted m-r-xs"></i> {{event.end | exclusiveEndDate:'mediumDate':event.allDay}}
                                 <span class="ng-hide" ng-hide="event.allDay"> {{event.end | date:'shortTime'}}</span>
                             </div>
 
@@ -100,8 +100,8 @@
                         </a>
 
                         <div class="text-xs text-muted">
-                            {{event.start | date:'mediumDate'}}<span class="ng-hide" ng-hide="event.allDay"> {{event.start | date:'shortTime'}}</span>
-                            <span ng-show="event.end"> - {{event.end | date:"mediumDate"}}
+                            {{event.start | date:'mediumDate':'+0200'}}<span class="ng-hide" ng-hide="event.allDay"> {{event.start | date:'shortTime'}}</span>
+                            <span ng-show="event.end"> - {{event.end | exclusiveEndDate:'mediumDate':event.allDay}}
                                 <span class="ng-hide" ng-hide="event.allDay"> {{event.end | date:'shortTime'}}</span>
                             </span>
                         </div>
