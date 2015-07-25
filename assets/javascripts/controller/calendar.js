@@ -147,7 +147,7 @@ angular.module('admin42')
             $scope.events.push({
                 title: 'New Event',
                 startTimestamp: momentDate.unix(),
-                start: moment().format(), // add new event with current date time and current timezone
+                start: momentDate.format(),
                 allDay: true,
                 className: ['b-l b-2x b-primary'],
                 stick: true // prevents new events from disappearing when switching views
@@ -237,7 +237,7 @@ angular.module('admin42')
                 {
                     title: 'Long Event Test',
                     start: moment(new Date(y, m, d - 5, 9, 30)).format('YYYY-MM-DD HH:mm:ssZ'),
-                    end: moment().startOf('day').startOf('hour').format(), // needs to be formatted for angular view
+                    end: moment().format(), // needs to be formatted for angular view
                     allDay: true,
                     location: 'HD City',
                     info: 'Long event test - time truncated'
