@@ -65,8 +65,24 @@
     -moz-box-sizing: content-box;
     box-sizing: content-box;
 
-    .bg-primary;
+    border: none;
+    .b-l;
+    .b-l-2x;
     .b-primary;
+    background: #FFF;
+    color: lighten(@text-color, 8%);; // white or black
+    &:hover {
+        color: @text-color; // white or black
+    }
+
+    &.fc-event-all-day {
+        border: 1px solid @brand-primary;
+        background: @brand-primary;
+        color: darken(rgb(255, 255, 255), 8%); // white or black
+        &:hover {
+            color: white; // white or black
+        }
+    }
 }
 
 .fc-event-inner {
@@ -120,21 +136,6 @@
 
 .fc-overlay .pull-down {
     bottom: 11px;
-}
-
-.fc-event {
-
-    color: darken(rgb(255,255,255), 8%); // white or black
-    &:hover {
-        color: white; // white or black
-    }
-
-    &.light {
-        color: lighten(@text-color, 8%);; // white or black
-        &:hover {
-            color: @text-color; // white or black
-        }
-    }
 }
 
 .fc-event:hover,

@@ -141,14 +141,13 @@ angular.module('admin42')
             // add event today by default
             momentDate = momentDate || moment();
 
-            $scope.events.push({
+            $scope.events.push($scope.sanitizeEventModel({
                 title: 'New Event',
                 startTimestamp: momentDate.unix(),
                 start: momentDate.format(),
                 allDay: true,
-                className: ['b-l b-2x b-primary'],
                 stick: true // prevents new events from disappearing when switching views
-            });
+            }));
         };
 
         $scope.removeEvent = function (index) {
@@ -173,7 +172,9 @@ angular.module('admin42')
             eventModel.start = moment(eventModel.start).format();
             eventModel.startTimestamp = moment(eventModel.start).unix();
 
-            if (eventModel.allDay && moment(eventModel.start).format('YYYY-MM-DD') == moment(eventModel.end).subtract(1, 'day').format('YYYY-MM-DD')
+            if (eventModel.allDay && (
+                moment(eventModel.start).format('YYYY-MM-DD') == moment(eventModel.end).subtract(1, 'day').format('YYYY-MM-DD')
+                || moment(eventModel.start).format('YYYY-MM-DD') == moment(eventModel.end).format('YYYY-MM-DD'))
                 ) {
                 eventModel.end = null;
             }
@@ -182,18 +183,32 @@ angular.module('admin42')
                 eventModel.end = moment(eventModel.end).format();
             }
 
-            if(eventModel.color) {
-                eventModel.borderColor = eventModel.borderColor ? eventModel.borderColor : eventModel.color;
-                eventModel.backgroundColor = eventModel.backgroundColor ? eventModel.backgroundColor : eventModel.color;
+            //eventModel.color = null;
+
+            eventModel.className = [];
+
+            if(eventModel.allDay) {
+                //eventModel.className = ['dark']; // dark or light - should match darkness of color
+                eventModel.className = ['fc-event-all-day']; // dark or light - should match darkness of color
+                eventModel.backgroundColor = '';
+            } else {
+                eventModel.backgroundColor = '#FFF';
             }
 
-            eventModel.style = '';
-            eventModel.style += eventModel.textColor ? 'color:'+eventModel.textColor+';' : '';
-            eventModel.style += eventModel.borderColor ? 'border-color:'+eventModel.borderColor+';' : '';
-            eventModel.style += eventModel.backgroundColor ? 'background-color:'+eventModel.backgroundColor+';' : '';
+            //if(eventModel.color) {
+            //    eventModel.borderColor = eventModel.borderColor ? eventModel.borderColor : eventModel.color;
+            //    eventModel.backgroundColor = eventModel.backgroundColor ? eventModel.backgroundColor : eventModel.color;
+            //}
+            //
+            //eventModel.style = '';
+            //eventModel.style += eventModel.textColor ? 'color:'+eventModel.textColor+';' : '';
+            //eventModel.style += eventModel.borderColor ? 'border-color:'+eventModel.borderColor+';' : '';
+            ////eventModel.style += eventModel.backgroundColor ? 'background-color:'+eventModel.backgroundColor+';' : '';
+            //
+
+            eventModel.borderColor = eventModel.color;
 
             eventModel.listStyle = '';
-            eventModel.listStyle += eventModel.borderColor ? 'color:'+eventModel.borderColor+';' : '';
             eventModel.listStyle += eventModel.borderColor ? 'border-color:'+eventModel.borderColor+';' : '';
 
             return eventModel;
@@ -236,7 +251,6 @@ angular.module('admin42')
                     location: 'Vienna',
                     info: 'All day event test: time truncated',
                     color: '#27ae60',
-                    className: ['dark'], // dark or light - should match darkness of color
                     updateUrl: '', // url to send update to if changing title or confirming add/edit modal
                     deleteUrl: '' // url to send delete action to
                 },
@@ -248,7 +262,6 @@ angular.module('admin42')
                     location: 'Vienna',
                     info: 'Two whole days',
                     color: '#e74c3c',
-                    className: ['dark'], // dark or light - should match darkness of color
                     updateUrl: '', // url to send update to if changing title or confirming add/edit modal
                     deleteUrl: '' // url to send delete action to
                 },
@@ -260,7 +273,6 @@ angular.module('admin42')
                     location: 'Vienna',
                     info: 'Long event test: times truncated',
                     color: '#e67e22',
-                    className: ['dark'], // dark or light - should match darkness of color
                     updateUrl: '', // url to send update to if changing title or confirming add/edit modal
                     deleteUrl: '' // url to send delete action to
                 },
@@ -269,7 +281,6 @@ angular.module('admin42')
                     start: moment().format(),
                     info: 'Specific Date & Time without end',
                     color: '#f1c40f',
-                    className: ['light'], // dark or light - should match darkness of color
                     updateUrl: '', // url to send update to if changing title or confirming add/edit modal
                     deleteUrl: '' // url to send delete action to
                 }
