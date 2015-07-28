@@ -80,13 +80,17 @@ class CalendarController extends AbstractAdminController
 
         $events = [];
 
-        $result = $this->getTableGateway('Calendar42\Event')->select(
-            function (Select $select) use ($calendarId) {
-                $select->where(function (Where $where) use ($calendarId) {
-                    $where->equalTo('calendarId', $calendarId);
-                });
-            }
-        );
+        if($calendarId) {
+            $result = $this->getTableGateway('Calendar42\Event')->select(
+                function (Select $select) use ($calendarId) {
+                    $select->where(function (Where $where) use ($calendarId) {
+                        $where->equalTo('calendarId', $calendarId);
+                    });
+                }
+            );
+        } else {
+            $result = $this->getTableGateway('Calendar42\Event')->select();
+        }
 
         foreach ($result as $event) {
 
