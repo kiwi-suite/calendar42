@@ -77,12 +77,10 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                         <i class="fa fa-bars"></i> <?= $this->translate('button.event-list', 'admin') ?>
                     </button>
 
-                    <?php if (!is_null($calendar)): ?>
-                        <a href="<?= $this->url('admin/event/add') ?>?calendarId=<?= $calendar->getId() ?>"
-                           type="button" class="btn btn-sm btn-primary btn-addon">
-                            <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
-                        </a>
-                    <?php endif ?>
+                    <a href="<?= $this->url('admin/event/add') ?><?= $calendar ? '?calendarId='.$calendar->getId() : '' ?>"
+                       type="button" class="btn btn-sm btn-primary btn-addon">
+                        <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
+                    </a>
 
                     <div class="pull-right">
                         <button type="button" class="btn btn-sm btn-default" ng-click="today()">
