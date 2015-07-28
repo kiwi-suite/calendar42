@@ -18,23 +18,32 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
     >
     <div class="panel panel-default">
 
+        <div class="panel-heading">
+            <?php if ($this->calendar): ?>
+                <span class="panel-title">
+                    <?= $this->calendar->getTitle() ?>
+                </span>
+            <?php else: ?>
+                <span class="panel-title">
+                    All Calendars
+                </span>
+            <?php endif ?>
+
+            <div class="pull-right">
+
+                <a href="<?= $this->url('admin/calendar/add') ?>" class="btn btn-xs btn-primary btn-addon">
+                    <i class="fa fa-plus"></i> <?= $this->translate('button.calendar-add', 'admin') ?>
+                </a>
+                <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
+                    <i class="fa fa-bars"></i> <?= $this->translate('button.calendar-list', 'admin') ?>
+                </a>
+
+            </div>
+
+        </div>
+
         <div class="hbox hbox-auto-xs hbox-auto-sm">
             <div class="col wrapper-md">
-
-                <div class="clearfix m-b">
-
-                    <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-sm btn-default m-r-xs">
-                        <i class="fa fa-bars"></i> <?= $this->translate('button.calendar-list', 'admin') ?>
-                    </a>
-
-                    <a href="<?= $this->url('admin/calendar/add') ?>" class="btn btn-sm btn-primary btn-addon">
-                        <i class="fa fa-plus"></i> <?= $this->translate('button.calendar-add', 'admin') ?>
-                    </a>
-
-                    <div class="pull-right">
-                    </div>
-
-                </div>
 
                 <!--<ul class="nav nav-tabs" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude="">-->
                 <!--    <li ng-class="{active: active, disabled: disabled}" select="renderCalender('myCalendar1');" class="ng-isolate-scope active">-->
