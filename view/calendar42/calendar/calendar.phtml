@@ -29,9 +29,35 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
 
             <div class="pull-right">
 
-                <a href="<?= $this->url('admin/calendar/add') ?>" class="btn btn-xs btn-primary btn-addon">
-                    <i class="fa fa-plus"></i> <?= $this->translate('button.calendar-add', 'admin') ?>
-                </a>
+                <?php /*
+                    <button type="button" tooltip="Double click on calendar day to create event"
+                            class="btn btn-sm btn-primary btn-addon" ng-click="addEvent()">
+                        <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
+                    </button>
+
+                    <button type="button" class="btn btn-sm btn-default m-r-xs" ui-toggle-class="show"
+                            target="#eventList">
+                        <i class="fa fa-bars"></i> <?= $this->translate('button.event-list', 'admin') ?>
+                    </button>
+                    */ ?>
+
+                <button type="button" class="btn btn-xs btn-default" ng-click="today()">
+                    <?= $this->translate('button.today', 'admin') ?>
+                </button>
+
+                <div class="btn-group btn-group-xs m-l-xs">
+                    <button class="btn btn-sm btn-default"
+                            ng-click="changeView('agendaDay')"><?= $this->translate(
+                            'button.day', 'admin'
+                        ) ?></button>
+                    <button class="btn btn-sm btn-default"
+                            ng-click="changeView('agendaWeek')"><?= $this->translate(
+                            'button.week', 'admin'
+                        ) ?></button>
+                    <button class="btn btn-sm btn-default" ng-click="changeView('month')"><?= $this->translate(
+                            'button.month', 'admin'
+                        ) ?></button>
+                </div>
 
                 <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
                     <i class="fa fa-bars"></i> <?= $this->translate('button.calendar-list', 'admin') ?>
@@ -62,44 +88,6 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                 <!--    </li>-->
                 <!--</ul>-->
 
-                <div class="clearfix m-b">
-
-                    <?php /*
-                    <button type="button" tooltip="Double click on calendar day to create event"
-                            class="btn btn-sm btn-primary btn-addon" ng-click="addEvent()">
-                        <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
-                    </button>
-                    */ ?>
-
-                    <button type="button" class="btn btn-sm btn-default m-r-xs" ui-toggle-class="show"
-                            target="#calendarList">
-                        <i class="fa fa-bars"></i> <?= $this->translate('button.event-list', 'admin') ?>
-                    </button>
-
-                    <a href="<?= $this->url('admin/event/add') ?><?= $calendar ? '?calendarId='.$calendar->getId() : '' ?>"
-                       type="button" class="btn btn-sm btn-primary btn-addon">
-                        <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
-                    </a>
-
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-sm btn-default" ng-click="today()">
-                            <?= $this->translate('button.today', 'admin') ?>
-                        </button>
-                        <div class="btn-group m-l-xs">
-                            <button class="btn btn-sm btn-default"
-                                    ng-click="changeView('agendaDay')"><?= $this->translate(
-                                    'button.day', 'admin'
-                                ) ?></button>
-                            <button class="btn btn-sm btn-default"
-                                    ng-click="changeView('agendaWeek')"><?= $this->translate(
-                                    'button.week', 'admin'
-                                ) ?></button>
-                            <button class="btn btn-sm btn-default" ng-click="changeView('month')"><?= $this->translate(
-                                    'button.month', 'admin'
-                                ) ?></button>
-                        </div>
-                    </div>
-                </div>
                 <div class="pos-rlt">
                     <div class="fc-overlay">
                         <div class="panel bg-white b-a pos-rlt">
@@ -134,7 +122,7 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                         ></div>
                 </div>
             </div>
-            <div class="col w-md w-auto-xs bg-light dk bg-auto b-l hide calendar-list" id="calendarList">
+            <div class="col w-md w-auto-xs dk bg-auto b-l calendar-list <?= $calendar ? '' : 'hide' ?>" id="eventList">
                 <div class="wrapper">
                     <div ng-repeat="event in events | orderBy:'startTimestamp'"
                          class="bg-white-only r r-2x m-b-xs wrapper-sm b-l b-l-2x event {{event.className[0]}}"
@@ -160,5 +148,13 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                 </div>
             </div>
         </div>
+
+        <div class="panel-footer">
+            <a href="<?= $this->url('admin/event/add') ?><?= $calendar ? '?calendarId=' . $calendar->getId() : '' ?>"
+               type="button" class="btn btn-default">
+                <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
+            </a>
+        </div>
+
     </div>
 </div>
