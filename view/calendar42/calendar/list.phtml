@@ -6,17 +6,26 @@
 </div>
 
 <div class="wrapper-md">
-    <div class="row">
-        <?php foreach ($calendars as $calendar): ?>
-            <div class="col-sm-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="panel-title">
+                All Calendars
+            </span>
+            <div class="pull-right">
 
-                        <span class="panel-title">
-                            <a href="<?= $this->url('admin/calendar/calendar', ['id' => $calendar->id]) ?>">
-                                <span class="fa fa-calendar"></span> <?= $calendar->title ?>
-                            </a>
-                        </span>
+                <a href="<?= $this->url('admin/calendar/add') ?>" class="btn btn-xs btn-primary btn-addon">
+                    <i class="fa fa-plus"></i> <?= $this->translate('button.calendar-add', 'admin') ?>
+                </a>
+
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <?php foreach ($calendars as $calendar): ?>
+                    <div class="col-sm-4">
+                        <a href="<?= $this->url('admin/calendar/calendar', ['id' => $calendar->id]) ?>">
+                            <span class="fa fa-calendar"></span> <?= $calendar->title ?>
+                        </a>
 
                         <?php /*
                         <div class="panel-title pull-right text-muted">
@@ -28,10 +37,6 @@
                                     class="fa fa-share"></span></a>
                         </div>
                         */ ?>
-                    </div>
-
-                    <div class="panel-body">
-
                         <div class="list-group">
                             <a href="<?= $this->url('admin/calendar/calendar', ['id' => $calendar->id]) ?>"
                                class="list-group-item">
@@ -50,10 +55,9 @@
                                 <span class="fa fa-plus"></span> Add Event
                             </a>
                         </div>
-
                     </div>
-                </div>
+                <?php endforeach ?>
             </div>
-        <?php endforeach ?>
+        </div>
     </div>
 </div>

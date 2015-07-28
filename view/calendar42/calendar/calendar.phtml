@@ -19,21 +19,20 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
     <div class="panel panel-default">
 
         <div class="panel-heading">
-            <?php if ($this->calendar): ?>
-                <span class="panel-title">
+            <span class="panel-title">
+                <?php if ($this->calendar): ?>
                     <?= $this->calendar->getTitle() ?>
-                </span>
-            <?php else: ?>
-                <span class="panel-title">
+                <?php else: ?>
                     All Calendars
-                </span>
-            <?php endif ?>
+                <?php endif ?>
+            </span>
 
             <div class="pull-right">
 
                 <a href="<?= $this->url('admin/calendar/add') ?>" class="btn btn-xs btn-primary btn-addon">
                     <i class="fa fa-plus"></i> <?= $this->translate('button.calendar-add', 'admin') ?>
                 </a>
+
                 <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
                     <i class="fa fa-bars"></i> <?= $this->translate('button.calendar-list', 'admin') ?>
                 </a>
