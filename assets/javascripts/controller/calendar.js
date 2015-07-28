@@ -11,7 +11,7 @@ angular.module('admin42')
         }
     })
 
-    .controller('CalendarController', function ($scope, $attrs, $locale, $timeout, $log, toaster, uiCalendarConfig) {
+    .controller('CalendarController', function ($scope, $attrs, $locale, $timeout, $log, toaster, jsonCache, uiCalendarConfig) {
 
         $timeout(function () {
             for (var calendar in uiCalendarConfig.calendars) {
@@ -183,28 +183,14 @@ angular.module('admin42')
                 eventModel.end = moment(eventModel.end).format();
             }
 
-            //eventModel.color = null;
-
             eventModel.className = [];
 
             if(eventModel.allDay) {
-                //eventModel.className = ['dark']; // dark or light - should match darkness of color
                 eventModel.className = ['fc-event-all-day']; // dark or light - should match darkness of color
                 eventModel.backgroundColor = '';
             } else {
                 eventModel.backgroundColor = '#FFF';
             }
-
-            //if(eventModel.color) {
-            //    eventModel.borderColor = eventModel.borderColor ? eventModel.borderColor : eventModel.color;
-            //    eventModel.backgroundColor = eventModel.backgroundColor ? eventModel.backgroundColor : eventModel.color;
-            //}
-            //
-            //eventModel.style = '';
-            //eventModel.style += eventModel.textColor ? 'color:'+eventModel.textColor+';' : '';
-            //eventModel.style += eventModel.borderColor ? 'border-color:'+eventModel.borderColor+';' : '';
-            ////eventModel.style += eventModel.backgroundColor ? 'background-color:'+eventModel.backgroundColor+';' : '';
-            //
 
             eventModel.borderColor = eventModel.color;
 
@@ -214,7 +200,16 @@ angular.module('admin42')
             return eventModel;
         };
 
-        $scope.eventSources = getTestEventSources();
+        $scope.eventSources = getEventSources();
+
+        function getEventSources() {
+
+            // fetch pre-parsed json script template
+            $scope.jsonEvents = jsonCache.get($attrs.jsonDataId);
+            $scope.events = $scope.jsonEvents.events;
+            $scope.events.map($scope.sanitizeEventModel);
+            return [$scope.events];
+        }
 
         function getTestEventSources() {
 
@@ -286,7 +281,25 @@ angular.module('admin42')
                 }
             ];
 
-            // transform api event list into angular-ui fullcallendar format
+            //$scope.dynEvents = {
+            //    url: 'http://localhost/skrapid/public/admin/calendar/1/events/',
+            //    type: 'GET',
+            //    //data: {
+            //    //    custom_param1: 'something',
+            //    //    custom_param2: 'somethingelse'
+            //    //},
+            //    error: function() {
+            //        alert('there was an error while fetching events!');
+            //    },
+            //    success: function(data) {
+            //        console.log($scope.dynEvents);
+            //        data.map($scope.sanitizeEventModel);
+            //    },
+            //    color: 'yellow',   // a non-ajax option
+            //    textColor: 'black' // a non-ajax option
+            //};
+
+            // transform api event list into angular-ui fullcalendar format
             $scope.events.map($scope.sanitizeEventModel);
 
             return [$scope.events];

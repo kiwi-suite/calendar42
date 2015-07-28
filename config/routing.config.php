@@ -27,6 +27,15 @@ return [
                                     ],
                                 ],
                             ],
+                            'events' => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => ':id/events/',
+                                    'defaults' => [
+                                        'action' => 'events'
+                                    ],
+                                ],
+                            ],
                             'list' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [

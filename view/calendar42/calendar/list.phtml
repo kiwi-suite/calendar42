@@ -6,4 +6,53 @@
 </div>
 
 <div class="wrapper-md">
+    <?php foreach ($calendars as $calendar): ?>
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+
+                    <span class="panel-title">
+                        <a href="<?= $this->url('admin/calendar/calendar', ['id' => $calendar->id]) ?>">
+                            <span class="fa fa-calendar"></span> <?= $calendar->title ?>
+                        </a>
+                    </span>
+
+                    <?php /*
+                    <div class="panel-title pull-right text-muted">
+                        <a href="<?= $this->url('admin/calendar/calendar', ['id' => $calendar->id]) ?>">
+                            X Events
+                        </a>
+                        <a class="btn btn-default btn-xs"
+                           href="<?= $this->url('admin/calendar/calendar', ['id' => $calendar->id]) ?>"><span
+                                class="fa fa-share"></span></a>
+                    </div>
+                    */ ?>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="list-group">
+                        <a href="<?= $this->url('admin/calendar/calendar', ['id' => $calendar->id]) ?>"
+                           class="list-group-item">
+                            <span class="fa fa-eye"></span> Show Calendar
+                        </a>
+                        <a href="<?= $this->url('admin/calendar/edit', ['id' => $calendar->id]) ?>"
+                           class="list-group-item">
+                            <span class="fa fa-pencil"></span> Edit Calendar
+                        </a>
+                        <a href="<?= $this->url('admin/calendar/delete', ['id' => $calendar->id]) ?>"
+                           class="list-group-item">
+                            <span class="fa fa-trash"></span> Delete Calendar
+                        </a>
+                        <a href="<?= $this->url('admin/event/add') ?>?calendarId=<?= $calendar->id ?>"
+                           class="list-group-item">
+                            <span class="fa fa-plus"></span> Add Event
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    <?php endforeach ?>
 </div>

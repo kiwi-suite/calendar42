@@ -6,4 +6,54 @@
 </div>
 
 <div class="wrapper-md">
+
+    <form class="form-horizontal" role="form" action="<?= $this->url(null, [], [], true) ?>" method="post">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <?php if ($this->calendar): ?>
+                    <span class="panel-title">
+                        <?= $this->calendar->getTitle() ?>
+                    </span>
+                <?php else: ?>
+                    <span class="panel-title">
+                    New Calendar
+                </span>
+                <?php endif ?>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <?= $this->form($this->form) ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-md-10">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="fa fa-save"></span>
+                                <?= $this->translate('button.save', 'admin') ?>
+                            </button>
+
+                            <?php if ($this->params()->fromRoute('isEditMode') == true): ?>
+                                <button
+                                    type="button"
+                                    class="btn btn-danger dynamic-form-submit"
+                                    data-action="<?= $this->url('admin/calendar/delete') ?>"
+                                    data-form-id="<?= $this->params()->fromRoute('id') ?>">
+                                    <span class="fa fa-trash-o"></span>
+                                    <?= $this->translate('button.delete', 'admin') ?>
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
