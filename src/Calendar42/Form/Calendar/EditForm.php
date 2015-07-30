@@ -36,8 +36,11 @@ class EditForm extends Form
         $this->add($color);
     }
 
-    public function setFieldValues($fieldValues) {
-
+    /**
+     * @param $fieldValues
+     */
+    public function setFieldValues($fieldValues)
+    {
         foreach($fieldValues as $field => $value){
             $element = $this->get($field);
             if($element) {
