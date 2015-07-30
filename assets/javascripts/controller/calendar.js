@@ -156,8 +156,10 @@ angular.module('admin42')
             }));
         };
 
-        $scope.removeEvent = function (index) {
-            $scope.events.splice(index, 1);
+        $scope.removeEvent = function (event) {
+
+            // TODO: remove by id
+            //$scope.events.splice(index, 1);
         };
 
         // a wrapper to update angular models properly from fullcalendar events

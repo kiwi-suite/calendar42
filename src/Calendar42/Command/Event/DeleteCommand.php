@@ -17,7 +17,7 @@ class DeleteCommand extends AbstractCommand
     /**
      * @var Event
      */
-    private $event;
+    private $eventModel;
 
     /**
      * @var int
@@ -25,23 +25,12 @@ class DeleteCommand extends AbstractCommand
     private $eventId;
 
     /**
-     * @param Event $event
-     * @return $this
-     */
-    public function setEvent(Event $event)
-    {
-        $this->event = $event;
-
-        return $this;
-    }
-
-    /**
      * @param int $eventId
      * @return $this
      */
     public function setEventId($eventId)
     {
-        $this->$eventID = $eventId;
+        $this->eventId = $eventId;
 
         return $this;
     }
@@ -52,10 +41,10 @@ class DeleteCommand extends AbstractCommand
     protected function preExecute()
     {
         if (!empty($this->eventId)) {
-            $this->event = $this->getTableGateway('Event42\Event')->selectByPrimary((int)$this->eventId);
+            $this->eventModel = $this->getTableGateway('Calendar42\Event')->selectByPrimary((int)$this->eventId);
         }
 
-        if (!($this->event instanceof Event)) {
+        if (!($this->eventModel instanceof Event)) {
             $this->addError("event", "invalid event");
         }
     }
@@ -65,6 +54,8 @@ class DeleteCommand extends AbstractCommand
      */
     protected function execute()
     {
-        $this->getTableGateway('Event42\Event')->delete($this->event);
+        $this->getTableGateway('Calendar42\Event')->delete($this->eventModel);
+
+        return $this->eventModel;
     }
 }

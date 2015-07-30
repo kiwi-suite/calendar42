@@ -11,6 +11,7 @@ namespace Calendar42\Controller;
 
 use Admin42\Mvc\Controller\AbstractAdminController;
 use Calendar42\Command\Event\CreateCommand;
+use Calendar42\Command\Event\DeleteCommand;
 use Calendar42\Command\Event\EditCommand;
 use Calendar42\Form\Event\CreateForm;
 use Calendar42\Form\Event\EditForm;
@@ -158,10 +159,40 @@ class EventController extends AbstractAdminController
      */
     public function deleteAction()
     {
-        // TODO: delete action for event
+        /** @var DeleteCommand $deleteCmd */
+        $deleteCmd = $this->getCommand('Calendar42\Event\Delete');
 
-        return new JsonModel([
-            'success' => true,
-        ]);
+        if ($this->getRequest()->isDelete()) {
+
+            $deleteParams = [];
+            parse_str($this->getRequest()->getContent(), $deleteParams);
+
+            $event = $deleteCmd->setEventId((int) $deleteParams['id'])
+                ->run();
+
+            return new JsonModel([
+                'success' => true,
+            ]);
+        } elseif ($this->getRequest()->isPost()) {
+
+            $event = $deleteCmd->setEventId((int) $this->params()->fromPost('id'))
+                ->run();
+
+            $this->flashMessenger()->addSuccessMessage([
+                'title' => 'toaster.event.delete.title.success',
+                'message' => 'toaster.event.delete.message.success',
+            ]);
+        }
+
+        if($deleteCmd->getErrors()) {
+            return new JsonModel([
+                'success' => false,
+                'errors' => $deleteCmd->getErrors(),
+            ]);
+        } else {
+            return new JsonModel([
+                'redirect' => $this->url()->fromRoute('admin/calendar/calendar', ['id' => $event->getCalendarId()])
+            ]);
+        }
     }
 }
