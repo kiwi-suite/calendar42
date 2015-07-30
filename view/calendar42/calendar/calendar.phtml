@@ -19,17 +19,22 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
     <div class="panel panel-default">
 
         <div class="panel-heading">
+
             <span class="panel-title">
                 <?php if ($this->calendar): ?>
                     <?= $this->calendar->getTitle() ?>
-                    <a class="btn btn-xs btn-default" href="<?= $this->url('admin/calendar') ?>">Show All Events</a>
                 <?php else: ?>
                     All Events
                 <?php endif ?>
+                <a class="btn btn-xs btn-default" href="<?= $this->url('admin/calendar') ?>">
+                    <i class="fa fa-bars"></i> Show All Events
+                </a>
+                <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
+                    <i class="fa fa-bars"></i> <?= $this->translate('button.calendar-list', 'admin') ?>
+                </a>
             </span>
 
             <div class="pull-right">
-
                 <?php /*
                     <button type="button" tooltip="Double click on calendar day to create event"
                             class="btn btn-sm btn-primary btn-addon" ng-click="addEvent()">
@@ -59,11 +64,6 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                             'button.month', 'admin'
                         ) ?></button>
                 </div>
-
-                <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
-                    <i class="fa fa-bars"></i> <?= $this->translate('button.calendar-list', 'admin') ?>
-                </a>
-
             </div>
 
         </div>
