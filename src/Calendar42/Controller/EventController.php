@@ -167,7 +167,7 @@ class EventController extends AbstractAdminController
             $deleteParams = [];
             parse_str($this->getRequest()->getContent(), $deleteParams);
 
-            $event = $deleteCmd->setEventId((int) $deleteParams['id'])
+            $deleteCmd->setEventId((int) $deleteParams['id'])
                 ->run();
 
             return new JsonModel([
@@ -175,7 +175,7 @@ class EventController extends AbstractAdminController
             ]);
         } elseif ($this->getRequest()->isPost()) {
 
-            $event = $deleteCmd->setEventId((int) $this->params()->fromPost('id'))
+            $deleteCmd->setEventId((int) $this->params()->fromPost('id'))
                 ->run();
 
             $this->flashMessenger()->addSuccessMessage([
@@ -191,7 +191,7 @@ class EventController extends AbstractAdminController
             ]);
         } else {
             return new JsonModel([
-                'redirect' => $this->url()->fromRoute('admin/calendar/calendar', ['id' => $event->getCalendarId()])
+                'redirect' => $this->url()->fromRoute('admin/calendar')
             ]);
         }
     }
