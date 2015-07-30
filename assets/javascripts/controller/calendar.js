@@ -169,18 +169,18 @@ angular.module('admin42')
 
         $scope.sanitizeEventModel = function(eventModel) {
 
-            eventModel.start = moment(eventModel.start).format();
+            eventModel.start = moment.utc(eventModel.start).format();
             eventModel.startTimestamp = moment(eventModel.start).unix();
+
+            if (eventModel.end) {
+                eventModel.end = moment.utc(eventModel.end).format();
+            }
 
             if (eventModel.allDay && (
                 moment(eventModel.start).format('YYYY-MM-DD') == moment(eventModel.end).subtract(1, 'day').format('YYYY-MM-DD')
                 || moment(eventModel.start).format('YYYY-MM-DD') == moment(eventModel.end).format('YYYY-MM-DD'))
                 ) {
                 eventModel.end = null;
-            }
-
-            if (eventModel.end) {
-                eventModel.end = moment(eventModel.end).format();
             }
 
             eventModel.className = [];

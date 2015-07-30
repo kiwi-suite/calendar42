@@ -11,6 +11,7 @@ namespace Calendar42\Command\Event;
 
 use Calendar42\Model\Event;
 use Core42\Command\AbstractCommand;
+use DateTime;
 
 class EditCommand extends AbstractCommand
 {
@@ -152,8 +153,18 @@ class EditCommand extends AbstractCommand
             $this->addError("title", "Title can't be empty");
         }
 
-        if (empty($this->start)) {
+        if(!empty($this->start)) {
+            // truncate timezone information to prevent mysql error
+            $this->start = new DateTime($this->start);
+            $this->start = $this->start->format('Y-m-d H:i:s');
+        } else {
             $this->addError("start", "Start can't be empty");
+        }
+
+        if(!empty($this->end)) {
+            // truncate timezone information to prevent mysql error
+            $this->end = new DateTime($this->end);
+            $this->end = $this->end->format('Y-m-d H:i:s');
         }
 
         $this->end = (empty($this->end)) ? null : $this->end;
