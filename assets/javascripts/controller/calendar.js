@@ -191,10 +191,10 @@ angular.module('admin42')
                 eventModel.end = null;
             }
 
-            eventModel.className = [];
+            eventModel.className = eventModel.className || [];
 
             if(eventModel.allDay) {
-                eventModel.className = ['fc-event-all-day']; // dark or light - should match darkness of color
+                eventModel.className.push('fc-event-all-day');
                 eventModel.backgroundColor = '';
             } else {
                 eventModel.backgroundColor = '#FFF';
@@ -216,6 +216,7 @@ angular.module('admin42')
             $scope.jsonEvents = jsonCache.get($attrs.jsonDataId);
             $scope.events = $scope.jsonEvents.events;
             $scope.events.map($scope.sanitizeEventModel);
+            console.log($scope.events);
             return [$scope.events];
         }
 

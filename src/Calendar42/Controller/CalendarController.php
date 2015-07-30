@@ -11,10 +11,13 @@ namespace Calendar42\Controller;
 
 use Admin42\Mvc\Controller\AbstractAdminController;
 use Calendar42\Command\Calendar\CreateCommand;
-use Calendar42\Command\Calendar\EditCommand;
 use Calendar42\Command\Calendar\DeleteCommand;
+use Calendar42\Command\Calendar\EditCommand;
 use Calendar42\Form\Calendar\CreateForm;
 use Calendar42\Form\Calendar\EditForm;
+use Calendar42\Model\Calendar;
+use Calendar42\Model\Event;
+use Cocur\Slugify\Slugify;
 use Core42\View\Model\JsonModel;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Where;
@@ -30,8 +33,7 @@ class CalendarController extends AbstractAdminController
         $calendarId = $this->params()->fromRoute('id');
         $calendar = null;
 
-        if($calendarId) {
-
+        if ($calendarId) {
             $result = $this->getTableGateway('Calendar42\Calendar')->selectByPrimary($calendarId);
             $calendar = $result;
         }
@@ -39,7 +41,7 @@ class CalendarController extends AbstractAdminController
         $events = $this->eventsAction();
 
         return [
-            'events' => $events,
+            'events'   => $events,
             'calendar' => $calendar,
         ];
     }
@@ -81,29 +83,48 @@ class CalendarController extends AbstractAdminController
 
         $events = [];
 
-        if($calendarId) {
+        if ($calendarId) {
+            /** @var Event $result */
             $result = $this->getTableGateway('Calendar42\Event')->select(
                 function (Select $select) use ($calendarId) {
-                    $select->where(function (Where $where) use ($calendarId) {
-                        $where->equalTo('calendarId', $calendarId);
-                    });
+                    $select->where(
+                        function (Where $where) use ($calendarId) {
+                            $where->equalTo('calendarId', $calendarId);
+                        }
+                    );
                 }
             );
         } else {
+            /** @var Event $result */
             $result = $this->getTableGateway('Calendar42\Event')->select();
         }
 
         foreach ($result as $event) {
 
-            $event->setStart($event->getStart()->format('Y-m-d H:i:s'));
+            $event->setStart($event->getStart()->format('Y-m-d H:i:sP'));
+
             if ($event->getEnd()) {
-                $event->setEnd($event->getEnd()->format('Y-m-d H:i:s'));
+                $event->setEnd($event->getEnd()->format('Y-m-d H:i:sP'));
             }
 
             $eventExt = [
+                'className' => [],
                 'updateUrl' => $this->url()->fromRoute('admin/event/edit', ['id' => $event->getId()]),
                 'deleteUrl' => $this->url()->fromRoute('admin/event/delete', ['id' => $event->getId()]),
             ];
+
+            /** @var Calendar $result */
+            $calendar = $this->getTableGateway('Calendar42\Calendar')->selectByPrimary($event->getCalendarId());
+            if ($calendar) {
+                $calendarSettings = json_decode($calendar->getSettings());
+                if (isset($calendarSettings->handle)) {
+                    $slugify = new Slugify();
+                    $eventExt['className'][] = 'event-type-' . $slugify->slugify($calendarSettings->handle);
+                }
+                if (isset($calendarSettings->color)) {
+                    $eventExt['color'] = $calendarSettings->color;
+                }
+            }
 
             $events[] = array_merge($event->toArray(), $eventExt);
         }
@@ -195,7 +216,7 @@ class CalendarController extends AbstractAdminController
 
         /** @var EditForm $form */
         $form = $this->getForm('Calendar42\Calendar\Edit');
-        $form->setData($calendar->toArray());
+        $form->setData($calendar->toArray())->setFieldValues(json_decode($calendar->getSettings()));
 
         if ($prg !== false) {
             /** @var EditCommand $cmd */
@@ -204,7 +225,6 @@ class CalendarController extends AbstractAdminController
 
             $formCommand = $this->getFormCommand();
             $formCommand->setForm($form)
-                ->setProtectedData(['status'])
                 ->setCommand($cmd)
                 ->setData($prg)
                 ->run();
@@ -246,32 +266,40 @@ class CalendarController extends AbstractAdminController
             $deleteParams = [];
             parse_str($this->getRequest()->getContent(), $deleteParams);
 
-            $deleteCmd->setCalendarId((int) $deleteParams['id'])
+            $deleteCmd->setCalendarId((int)$deleteParams['id'])
                 ->run();
 
-            return new JsonModel([
-                'success' => true,
-            ]);
+            return new JsonModel(
+                [
+                    'success' => true,
+                ]
+            );
         } elseif ($this->getRequest()->isPost()) {
 
-            $deleteCmd->setCalendarId((int) $this->params()->fromPost('id'))
+            $deleteCmd->setCalendarId((int)$this->params()->fromPost('id'))
                 ->run();
 
-            $this->flashMessenger()->addSuccessMessage([
-                'title' => 'toaster.event.delete.title.success',
-                'message' => 'toaster.event.delete.message.success',
-            ]);
+            $this->flashMessenger()->addSuccessMessage(
+                [
+                    'title'   => 'toaster.event.delete.title.success',
+                    'message' => 'toaster.event.delete.message.success',
+                ]
+            );
         }
 
-        if($deleteCmd->getErrors()) {
-            return new JsonModel([
-                'success' => false,
-                'errors' => $deleteCmd->getErrors(),
-            ]);
+        if ($deleteCmd->getErrors()) {
+            return new JsonModel(
+                [
+                    'success' => false,
+                    'errors'  => $deleteCmd->getErrors(),
+                ]
+            );
         } else {
-            return new JsonModel([
-                'redirect' => $this->url()->fromRoute('admin/calendar/list')
-            ]);
+            return new JsonModel(
+                [
+                    'redirect' => $this->url()->fromRoute('admin/calendar/list')
+                ]
+            );
         }
     }
 }

@@ -21,10 +21,15 @@
             <table class="table table-striped table-hover">
                 <tbody>
                     <?php foreach ($calendars as $calendar): ?>
+                        <?php $settings = json_decode($calendar->settings)?>
                         <tr>
-                            <td>
+                            <td style="vertical-align: middle">
                                 <a href="<?= $this->url('admin/calendar/calendar', ['id' => $calendar->id]) ?>">
-                                    <?= $calendar->title ?>
+                                    <?php if(!is_null($settings->color)): ?>
+                                        <span class="fa fa-square" style="color: <?= $settings->color ?>;"></span> <?= $calendar->title ?>
+                                    <?php else: ?>
+                                        <span class="fa fa-square text-primary"></span> <?= $calendar->title ?>
+                                    <?php endif ?>
                                 </a>
                             </td>
                             <td class="text-right">

@@ -22,7 +22,12 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
 
             <span class="panel-title">
                 <?php if ($this->calendar): ?>
-                    <?= $this->calendar->getTitle() ?>
+                    <?php $settings = json_decode($this->calendar->getSettings())?>
+                    <?php if(!is_null($settings->color)): ?>
+                        <span class="fa fa-square" style="color: <?= $settings->color ?>;"></span> <?= $this->calendar->getTitle() ?>
+                    <?php else: ?>
+                        <span class="fa fa-square text-primary"></span> <?= $this->calendar->getTitle() ?>
+                    <?php endif ?>
                 <?php else: ?>
                     All Events
                 <?php endif ?>
@@ -123,7 +128,7 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                         ></div>
                 </div>
             </div>
-            <div class="col w-md w-auto-xs dk bg-auto b-l calendar-list <?= $calendar ? '' : 'hide' ?>" id="eventList">
+            <div class="col w-md w-auto-xs dk bg-auto b-l calendar-list <?= $calendar ? '' : ''//'hide' ?>" id="eventList">
                 <div class="wrapper">
                     <div ng-repeat="event in events | orderBy:'startTimestamp'"
                          class="bg-white-only r r-2x m-b-xs wrapper-sm b-l b-l-2x event {{event.className[0]}}"

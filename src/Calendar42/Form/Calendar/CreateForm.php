@@ -9,6 +9,7 @@
 
 namespace Calendar42\Form\Calendar;
 
+use Zend\Form\Element\Color;
 use Zend\Form\Element\Csrf;
 use Zend\Form\Element\Text;
 use Zend\Form\Form;
@@ -26,8 +27,22 @@ class CreateForm extends Form
         $title->setLabel('label.title');
         $this->add($title);
 
-        $color = new Text('color');
+        $handle = new Text('handle');
+        $handle->setLabel('label.handle');
+        $this->add($handle);
+
+        $color = new Color('color');
         $color->setLabel('label.color');
         $this->add($color);
+    }
+
+    public function setFieldValues($fieldValues) {
+
+        foreach($fieldValues as $field => $value){
+            $element = $this->get($field);
+            if($element) {
+                $element->setValue($value);
+            }
+        }
     }
 }

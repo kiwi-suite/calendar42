@@ -52,7 +52,10 @@ class CreateCommand extends AbstractCommand
     public function hydrate(array $values)
     {
         $this->setTitle(array_key_exists('title', $values) ? $values['title'] : null);
-        $this->setSettings(array_key_exists('settings', $values) ? $values['settings'] : null);
+        $this->setSettings(json_encode([
+            'color' => array_key_exists('color', $values) ? $values['color'] : null,
+            'handle' => array_key_exists('handle', $values) ? $values['handle'] : null,
+        ]));
     }
 
 
@@ -64,8 +67,6 @@ class CreateCommand extends AbstractCommand
         if (empty($this->title)) {
             $this->addError("title", "title can't be empty");
         }
-
-        $this->settings = (empty($this->settings)) ? null : $this->settings;
     }
 
     /**
