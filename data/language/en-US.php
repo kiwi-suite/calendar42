@@ -10,6 +10,7 @@ return [
     'label.calendar'                          => 'Calendar',
     'label.title'                             => 'Title',
     'label.color'                             => 'Color',
+    'label.handle'                            => 'Handle',
     'label.location'                          => 'Location',
     'label.info'                              => 'Info',
     'label.start'                             => 'Start',
