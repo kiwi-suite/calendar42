@@ -100,25 +100,25 @@ angular.module('admin42')
         $scope.uiConfig = {
             calendar: {
                 height: 450,
-                editable: true,
                 header: {
                     left: 'prev',
                     center: 'title',
                     right: 'next'
                 },
-                //lang: $locale.id.split('-')[0],
                 lang: $attrs.activeLocale.split('-')[0],
-                //nextDayThreshold: '00:00',
                 timezone: 'local', // very essential to correctly preserve timezones between fullcalendar and angular
                 dayClick: $scope.dayClick,
                 eventClick: $scope.eventClick,
+                eventMouseover: $scope.eventMouseover,
+
+                //editable: true,
                 eventDragStart: $scope.eventDragStart,
                 eventDrop: $scope.eventDrop,
-                eventResize: $scope.eventResize,
-                eventMouseover: $scope.eventMouseover,
-                viewRender: function (view, element) {
+                eventResize: $scope.eventResize
+
+                //viewRender: function (view, element) {
                     //$log.debug("View Changed: ", view.visStart, view.visEnd, view.start, view.end);
-                }
+                //}
             }
         };
 

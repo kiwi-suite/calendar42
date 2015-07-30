@@ -127,17 +127,16 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                 <div class="wrapper">
                     <div ng-repeat="event in events | orderBy:'startTimestamp'"
                          class="bg-white-only r r-2x m-b-xs wrapper-sm b-l b-l-2x event {{event.className[0]}}"
-                         style="{{event.listStyle}}">
+                         style="{{event.listStyle}}" ng-click="eventClick(event)">
 
                         <!--<input ng-model="event.title" class="form-control m-t-n-xs no-border no-padder no-bg">-->
                         <span class="m-t-n-xs no-border no-padder no-bg">{{event.title}}</span>
 
+                        <?php /*
                         <div class="pull-right">
-
                             <a class="text-xs text-muted" ng-click="eventClick(event)">
                                 <i class="fa fa-pencil"></i>
-                            </a><br>
-
+                            </a>
                             <delete
                                 url="<?= $this->url('admin/event/delete') ?>"
                                 title="<?= $this->translate("event.modal.delete.title", "admin") ?>"
@@ -146,8 +145,8 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                                 request-id="{{event.id}}"
                                 >
                             </delete>
-
                         </div>
+                        */?>
 
                         <div class="text-xs text-muted" ng-show="event.location">
                             {{event.location}}
