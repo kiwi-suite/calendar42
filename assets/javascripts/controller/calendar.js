@@ -22,6 +22,11 @@ angular.module('admin42')
 
         // == fullcalendar
 
+        $scope.eventClick = function (event, jsEvent, view) {
+
+            window.location.href = event.updateUrl;
+        };
+
         $scope.eventDrop = function (event, delta, revertFunc, jsEvent, ui, view) {
 
             $scope.updateEvent(event, delta, revertFunc, jsEvent, ui, view);
@@ -106,6 +111,7 @@ angular.module('admin42')
                 //nextDayThreshold: '00:00',
                 timezone: 'local', // very essential to correctly preserve timezones between fullcalendar and angular
                 dayClick: $scope.dayClick,
+                eventClick: $scope.eventClick,
                 eventDragStart: $scope.eventDragStart,
                 eventDrop: $scope.eventDrop,
                 eventResize: $scope.eventResize,

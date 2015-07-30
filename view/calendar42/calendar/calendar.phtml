@@ -22,8 +22,9 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
             <span class="panel-title">
                 <?php if ($this->calendar): ?>
                     <?= $this->calendar->getTitle() ?>
+                    <a class="btn btn-xs btn-default" href="<?= $this->url('admin/calendar') ?>">Show All Events</a>
                 <?php else: ?>
-                    All Calendars
+                    All Events
                 <?php endif ?>
             </span>
 

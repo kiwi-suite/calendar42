@@ -155,16 +155,16 @@ class EditCommand extends AbstractCommand
 
         if(!empty($this->start)) {
             // truncate timezone information to prevent mysql error
-            $this->start = new DateTime($this->start);
-            $this->start = $this->start->format('Y-m-d H:i:s');
+            $start = new DateTime($this->start);
+            $this->start = $start->format('Y-m-d H:i:s');
         } else {
             $this->addError("start", "Start can't be empty");
         }
 
         if(!empty($this->end)) {
             // truncate timezone information to prevent mysql error
-            $this->end = new DateTime($this->end);
-            $this->end = $this->end->format('Y-m-d H:i:s');
+            $end = new DateTime($this->end);
+            $this->end = $end->format('Y-m-d H:i:s');
         }
 
         $this->end = (empty($this->end)) ? null : $this->end;
