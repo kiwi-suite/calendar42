@@ -33,14 +33,13 @@
                                 </button>
 
                                 <?php if ($this->params()->fromRoute('isEditMode') == true): ?>
-                                    <button
-                                        type="button"
-                                        class="btn btn-danger dynamic-form-submit"
-                                        data-action="<?= $this->url('admin/calendar/delete') ?>"
-                                        data-form-id="<?= $this->params()->fromRoute('id') ?>">
-                                        <span class="fa fa-trash-o"></span>
-                                        <?= $this->translate('button.delete', 'admin') ?>
-                                    </button>
+                                    <delete
+                                        url="<?= $this->url('admin/calendar/delete') ?>"
+                                        title="<?= $this->translate("calendar.modal.delete.title", "admin") ?>"
+                                        content="<?= $this->translate("calendar.modal.delete.content", "admin") ?>"
+                                        request-id="<?= $this->calendar->getId() ?>"
+                                        >
+                                    </delete>
                                 <?php endif; ?>
                             </div>
                         </div>

@@ -17,7 +17,7 @@ class DeleteCommand extends AbstractCommand
     /**
      * @var Calendar
      */
-    private $calendar;
+    private $calendarModel;
 
     /**
      * @var int
@@ -25,23 +25,12 @@ class DeleteCommand extends AbstractCommand
     private $calendarId;
 
     /**
-     * @param Calendar $calendar
-     * @return $this
-     */
-    public function setCalendar(Calendar $calendar)
-    {
-        $this->calendar = $calendar;
-
-        return $this;
-    }
-
-    /**
      * @param int $calendarId
      * @return $this
      */
     public function setCalendarId($calendarId)
     {
-        $this->$calendarID = $calendarId;
+        $this->calendarId = $calendarId;
 
         return $this;
     }
@@ -52,11 +41,11 @@ class DeleteCommand extends AbstractCommand
     protected function preExecute()
     {
         if (!empty($this->calendarId)) {
-            $this->calendar = $this->getTableGateway('Calendar42\Calendar')->selectByPrimary((int)$this->calendarId);
+            $this->calendarModel = $this->getTableGateway('Calendar42\Calendar')->selectByPrimary((int)$this->calendarId);
         }
 
-        if (!($this->calendar instanceof Calendar)) {
-            $this->addError("calendar", "invalid calendar");
+        if (!($this->calendarModel instanceof Calendar)) {
+            $this->addError("event", "invalid calendar");
         }
     }
 
@@ -65,6 +54,8 @@ class DeleteCommand extends AbstractCommand
      */
     protected function execute()
     {
-        $this->getTableGateway('Calendar42\Calendar')->delete($this->calendar);
+        $this->getTableGateway('Calendar42\Calendar')->delete($this->calendarModel);
+
+        return $this->calendarModel;
     }
 }
