@@ -18,6 +18,15 @@ return [
                         ],
                         'may_terminate' => true,
                         'child_routes'  => [
+                            'ical' => [
+                                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                'options' => [
+                                    'route'    => ':id/ical/',
+                                    'defaults' => [
+                                        'action' => 'ical'
+                                    ],
+                                ],
+                            ],
                             'calendar' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [

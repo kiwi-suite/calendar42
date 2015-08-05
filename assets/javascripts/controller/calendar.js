@@ -216,7 +216,7 @@ angular.module('admin42')
             $scope.jsonEvents = jsonCache.get($attrs.jsonDataId);
             $scope.events = $scope.jsonEvents.events;
             $scope.events.map($scope.sanitizeEventModel);
-            console.log($scope.events);
+            //console.log($scope.events);
             return [$scope.events];
         }
 

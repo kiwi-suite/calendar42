@@ -15,12 +15,9 @@ use Calendar42\Command\Calendar\DeleteCommand;
 use Calendar42\Command\Calendar\EditCommand;
 use Calendar42\Form\Calendar\CreateForm;
 use Calendar42\Form\Calendar\EditForm;
-use Calendar42\Model\Calendar;
-use Calendar42\Model\Event;
-use Cocur\Slugify\Slugify;
+use Calendar42\Selector\EventSelector;
 use Core42\View\Model\JsonModel;
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Where;
+use Zend\Http\Headers;
 use Zend\Http\Response;
 
 class CalendarController extends AbstractAdminController
@@ -61,7 +58,7 @@ class CalendarController extends AbstractAdminController
                 'updateUrl'      => $this->url()->fromRoute('admin/calendar/edit', ['id' => $calendar->getId()]),
                 'deleteUrl'      => $this->url()->fromRoute('admin/calendar/delete', ['id' => $calendar->getId()]),
                 'eventSourceUrl' => $this->url()->fromRoute('admin/calendar/events', ['id' => $calendar->getId()]),
-                'createEventUrl' => $this->url()->fromRoute('admin/event/add') . '?calendarId=' . $calendar->getId(),
+                'createEventUrl' => $this->url()->fromRoute('admin/event/add').'?calendarId='.$calendar->getId(),
             ];
 
             $calendars[] = (object)array_merge($calendar->toArray(), $calendarExt);
@@ -79,61 +76,50 @@ class CalendarController extends AbstractAdminController
      */
     public function eventsAction()
     {
-        $calendarId = $this->params()->fromRoute('id');
-
-        $events = [];
-
-        if ($calendarId) {
-            /** @var Event $result */
-            $result = $this->getTableGateway('Calendar42\Event')->select(
-                function (Select $select) use ($calendarId) {
-                    $select->where(
-                        function (Where $where) use ($calendarId) {
-                            $where->equalTo('calendarId', $calendarId);
-                        }
-                    );
-                }
-            );
-        } else {
-            /** @var Event $result */
-            $result = $this->getTableGateway('Calendar42\Event')->select();
-        }
-
-        foreach ($result as $event) {
-
-            $event->setStart($event->getStart()->format('Y-m-d H:i:sP'));
-
-            if ($event->getEnd()) {
-                $event->setEnd($event->getEnd()->format('Y-m-d H:i:sP'));
-            }
-
-            $eventExt = [
-                'className' => [],
-                'updateUrl' => $this->url()->fromRoute('admin/event/edit', ['id' => $event->getId()]),
-                'deleteUrl' => $this->url()->fromRoute('admin/event/delete', ['id' => $event->getId()]),
-            ];
-
-            /** @var Calendar $result */
-            $calendar = $this->getTableGateway('Calendar42\Calendar')->selectByPrimary($event->getCalendarId());
-            if ($calendar) {
-                $calendarSettings = json_decode($calendar->getSettings());
-                if (isset($calendarSettings->handle)) {
-                    $slugify = new Slugify();
-                    $eventExt['className'][] = 'event-type-' . $slugify->slugify($calendarSettings->handle);
-                }
-                if (isset($calendarSettings->color)) {
-                    $eventExt['color'] = $calendarSettings->color;
-                }
-            }
-
-            $events[] = array_merge($event->toArray(), $eventExt);
-        }
+        /** @var EventSelector $selector */
+        $selector = $this->getSelector('Calendar42\Event');
+        $events = $selector->setCalendarIds($this->params()->fromRoute('id'))
+            ->setCrudUrls(true)
+            ->getResult();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
-            return new JsonModel(['events' => $events]);
+            return new JsonModel($events);
         }
 
-        return ['events' => $events];
+        return $events;
+    }
+
+    /**
+     *
+     */
+    public function icalAction()
+    {
+        /** @var EventSelector $selector */
+        $selector = $this->getSelector('Calendar42\Event');
+        $events = $selector->setCalendarIds($this->params()->fromRoute('id'))
+            ->setIcal(true)
+            ->getResult();
+
+        var_dump($events);
+        die();
+
+        $headers = new Headers;
+        //$headers->addHeaders(
+        //    [
+        //        //'Content-Disposition' => 'attachment; filename="' . $cmd->getFileName() . '"',
+        //        //'Content-Type'        => 'application/octet-stream',
+        //        //'Content-Length'      => strlen($cmd->getOutput()),
+        //        'Expires'             => '@0', // @0, because zf2 parses date as string to \DateTime() object
+        //        'Cache-Control'       => 'must-revalidate',
+        //        'Pragma'              => 'public'
+        //    ]
+        //);
+
+        $response = new Response;
+        $response->setContent(json_encode($events));
+        $response->setHeaders($headers);
+
+        return $response;
     }
 
     /**
