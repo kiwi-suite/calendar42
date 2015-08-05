@@ -15,7 +15,7 @@ use Calendar42\Command\Calendar\DeleteCommand;
 use Calendar42\Command\Calendar\EditCommand;
 use Calendar42\Form\Calendar\CreateForm;
 use Calendar42\Form\Calendar\EditForm;
-use Calendar42\Selector\EventSelector;
+use Calendar42\Selector\EventCalendarSelector;
 use Core42\View\Model\JsonModel;
 use Zend\Http\Headers;
 use Zend\Http\Response;
@@ -76,8 +76,8 @@ class CalendarController extends AbstractAdminController
      */
     public function eventsAction()
     {
-        /** @var EventSelector $selector */
-        $selector = $this->getSelector('Calendar42\Event');
+        /** @var EventCalendarSelector $selector */
+        $selector = $this->getSelector('Calendar42\EventCalendar');
         $events = $selector->setCalendarIds($this->params()->fromRoute('id'))
             ->setCrudUrls(true)
             ->getResult();
@@ -94,12 +94,13 @@ class CalendarController extends AbstractAdminController
      */
     public function icalAction()
     {
-        /** @var EventSelector $selector */
-        $selector = $this->getSelector('Calendar42\Event');
+        /** @var EventCalendarSelector $selector */
+        $selector = $this->getSelector('Calendar42\EventCalendar');
         $events = $selector->setCalendarIds($this->params()->fromRoute('id'))
             ->setIcal(true)
             ->getResult();
 
+        //$events = json_encode($events);
         var_dump($events);
         die();
 
@@ -116,7 +117,7 @@ class CalendarController extends AbstractAdminController
         //);
 
         $response = new Response;
-        $response->setContent(json_encode($events));
+        $response->setContent($events);
         $response->setHeaders($headers);
 
         return $response;

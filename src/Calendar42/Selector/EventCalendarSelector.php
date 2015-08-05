@@ -1,7 +1,6 @@
 <?php
 namespace Calendar42\Selector;
 
-use Calendar42\Model\Calendar;
 use Calendar42\Model\Event;
 use Cocur\Slugify\Slugify;
 use Core42\Db\ResultSet\ResultSet;
@@ -12,7 +11,7 @@ use Zend\Db\Sql\Sql;
 use Zend\Json\Json;
 use Zend\View\Helper\Url;
 
-class EventSelector extends AbstractDatabaseSelector
+class EventCalendarSelector extends AbstractDatabaseSelector
 {
     /**
      * @var int
@@ -35,7 +34,7 @@ class EventSelector extends AbstractDatabaseSelector
      */
     public function setCalendarIds($calendarIds)
     {
-        if(!is_array($calendarIds)) {
+        if (!is_array($calendarIds)) {
             $calendarIds = [$calendarIds];
         }
         $this->calendarIds = $calendarIds;
@@ -70,10 +69,6 @@ class EventSelector extends AbstractDatabaseSelector
      */
     public function getResult()
     {
-        $sql = new Sql($this->getServiceManager()->get('Db\Master'));
-        $statement = $sql->prepareStatementForSqlObject($this->getSelect());
-        $result = $statement->execute();
-
         /** @var DatabaseHydrator $hydrator */
         $hydrator = $this->getTableGateway('Calendar42\Event')->getHydrator();
 
@@ -83,9 +78,32 @@ class EventSelector extends AbstractDatabaseSelector
         $linkTableGateway = $this->getTableGateway('Admin42\Link');
         $linkProvider = $this->getServiceManager()->get('Admin42\LinkProvider');
 
+
+        /*
+         * calendars
+         */
+
+        $calendars = [];
         $slugify = new Slugify();
+        $result = $this->getTableGateway('Calendar42\Calendar')->select();
+        foreach ($result as $calendar) {
+            $calendarSettings = json_decode($calendar->getSettings());
+
+            $calendars[$calendar->getId()] = [
+                'name'  => $calendar->getTitle(),
+                'class' => $slugify->slugify($calendarSettings->handle),
+                'color' => $calendarSettings->color,
+            ];
+        }
+
+        /*
+         * events
+         */
 
         $events = [];
+        $sql = new Sql($this->getServiceManager()->get('Db\Master'));
+        $statement = $sql->prepareStatementForSqlObject($this->getSelect());
+        $result = $statement->execute();
         foreach ($result as $eventData) {
 
             $event = new Event;
@@ -101,28 +119,29 @@ class EventSelector extends AbstractDatabaseSelector
                 'className' => [],
             ];
 
-            if($this->crudUrls) {
+            if ($this->crudUrls) {
                 $eventExt['updateUrl'] = $urlHelper('admin/event/edit', ['id' => $event->getId()]);
                 $eventExt['deleteUrl'] = $urlHelper('admin/event/delete', ['id' => $event->getId()]);
             }
 
-            /** @var Calendar $result */
-            $calendar = $this->getTableGateway('Calendar42\Calendar')->selectByPrimary($event->getCalendarId());
+            $calendar =
+                (array_key_exists($event->getCalendarId(), $calendars)) ? $calendars[$event->getCalendarId()] : null;
+
             if ($calendar) {
-                $calendarSettings = json_decode($calendar->getSettings());
-                if (isset($calendarSettings->handle)) {
-                    $eventExt['className'][] = 'event-type-'.$slugify->slugify($calendarSettings->handle);
+                if (!empty($calendar['class'])) {
+                    $eventExt['className'][] = 'event-type-'.$calendar['class'];
                 }
-                if (isset($calendarSettings->color)) {
-                    $eventExt['color'] = $calendarSettings->color;
+                if (!empty($calendar['color'])) {
+                    $eventExt['color'] = $calendar['color'];
                 }
             }
 
             $eventExt['link'] = null;
-            if ((int) $event->getLinkId() > 0) {
+            if ((int)$event->getLinkId() > 0) {
                 $link = $linkTableGateway->selectByPrimary($event->getLinkId());
                 if (!empty($link)) {
-                    $eventExt['link'] = $linkProvider->assemble($link->getType(), Json::decode($link->getValue(), Json::TYPE_ARRAY));
+                    $eventExt['link'] =
+                        $linkProvider->assemble($link->getType(), Json::decode($link->getValue(), Json::TYPE_ARRAY));
                 }
             }
 
@@ -135,10 +154,8 @@ class EventSelector extends AbstractDatabaseSelector
             $events[] = array_merge($event, $eventExt);
         }
 
-        $calendars = [];
-
         return [
-            'events' => $events,
+            'events'    => $events,
             'calendars' => $calendars,
         ];
     }
