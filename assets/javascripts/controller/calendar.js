@@ -185,12 +185,12 @@ angular.module('admin42')
                 eventModel.end = moment.utc(eventModel.end).format();
             }
 
-            if (eventModel.allDay && (
-                moment(eventModel.start).format('YYYY-MM-DD') == moment(eventModel.end).subtract(1, 'day').format('YYYY-MM-DD')
-                || moment(eventModel.start).format('YYYY-MM-DD') == moment(eventModel.end).format('YYYY-MM-DD'))
-                ) {
-                eventModel.end = null;
-            }
+            //if (eventModel.allDay && (
+            //    moment(eventModel.start).format('YYYY-MM-DD') == moment(eventModel.end).subtract(1, 'day').format('YYYY-MM-DD')
+            //    || moment(eventModel.start).format('YYYY-MM-DD') == moment(eventModel.end).format('YYYY-MM-DD'))
+            //    ) {
+            //    eventModel.end = null;
+            //}
 
             eventModel.className = eventModel.className || [];
             eventModel.className = eventModel.className || [];
