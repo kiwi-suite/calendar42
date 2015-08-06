@@ -107,6 +107,7 @@ angular.module('admin42')
                 },
                 lang: $attrs.activeLocale.split('-')[0],
                 timezone: 'local', // very essential to correctly preserve timezones between fullcalendar and angular
+                nextDayThreshold: '00:01:00', // 9am
                 dayClick: $scope.dayClick,
                 eventClick: $scope.eventClick,
                 eventMouseover: $scope.eventMouseover,
@@ -191,6 +192,7 @@ angular.module('admin42')
                 eventModel.end = null;
             }
 
+            eventModel.className = eventModel.className || [];
             eventModel.className = eventModel.className || [];
 
             if(eventModel.allDay) {

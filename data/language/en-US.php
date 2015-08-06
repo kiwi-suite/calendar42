@@ -15,7 +15,7 @@ return [
     'label.info'                              => 'Info',
     'label.start'                             => 'Start',
     'label.end'                               => 'End',
-    'label.all-day'                           => 'All Day',
+    'label.all-day'                           => 'Display as all-day event<br><span class="text-muted">Attention: end date\'s time is exclusive.<br>iCal exports will contain exact date and time to prevent timezone issues.</span>',
 
     'button.today'                            => 'Today',
     'button.day'                              => 'Day',

@@ -27,11 +27,13 @@ class EventController extends AbstractAdminController
     {
         // TODO: list of events
 
-        return new JsonModel([
+        return new JsonModel(
             [
-                'title' => 'Test',
-            ],
-        ]);
+                [
+                    'title' => 'Test',
+                ],
+            ]
+        );
     }
 
     /**
@@ -124,7 +126,7 @@ class EventController extends AbstractAdminController
             $cmd->setEventId((int)$this->params()->fromRoute('id'));
 
             $formCommand = $this->getFormCommand();
-            $event = $formCommand->setForm($form)
+            $updatedEvent = $formCommand->setForm($form)
                 ->setCommand($cmd)
                 ->setData($prg)
                 ->run();
@@ -137,7 +139,7 @@ class EventController extends AbstractAdminController
                     ]
                 );
 
-                return $this->redirect()->toRoute('admin/calendar/calendar', ['id' => $event->getCalendarId()]);
+                return $this->redirect()->toRoute('admin/calendar/calendar', ['id' => $updatedEvent->getCalendarId()]);
             } else {
                 $this->flashMessenger()->addErrorMessage(
                     [
@@ -149,7 +151,7 @@ class EventController extends AbstractAdminController
         }
 
         return [
-            'form'     => $form,
+            'form'  => $form,
             'event' => $event,
         ];
     }
@@ -167,32 +169,40 @@ class EventController extends AbstractAdminController
             $deleteParams = [];
             parse_str($this->getRequest()->getContent(), $deleteParams);
 
-            $deleteCmd->setEventId((int) $deleteParams['id'])
+            $deleteCmd->setEventId((int)$deleteParams['id'])
                 ->run();
 
-            return new JsonModel([
-                'success' => true,
-            ]);
+            return new JsonModel(
+                [
+                    'success' => true,
+                ]
+            );
         } elseif ($this->getRequest()->isPost()) {
 
-            $deleteCmd->setEventId((int) $this->params()->fromPost('id'))
+            $deleteCmd->setEventId((int)$this->params()->fromPost('id'))
                 ->run();
 
-            $this->flashMessenger()->addSuccessMessage([
-                'title' => 'toaster.event.delete.title.success',
-                'message' => 'toaster.event.delete.message.success',
-            ]);
+            $this->flashMessenger()->addSuccessMessage(
+                [
+                    'title'   => 'toaster.event.delete.title.success',
+                    'message' => 'toaster.event.delete.message.success',
+                ]
+            );
         }
 
-        if($deleteCmd->getErrors()) {
-            return new JsonModel([
-                'success' => false,
-                'errors' => $deleteCmd->getErrors(),
-            ]);
+        if ($deleteCmd->getErrors()) {
+            return new JsonModel(
+                [
+                    'success' => false,
+                    'errors'  => $deleteCmd->getErrors(),
+                ]
+            );
         } else {
-            return new JsonModel([
-                'redirect' => $this->url()->fromRoute('admin/calendar')
-            ]);
+            return new JsonModel(
+                [
+                    'redirect' => $this->url()->fromRoute('admin/calendar')
+                ]
+            );
         }
     }
 }

@@ -28,14 +28,20 @@ class CalendarController extends AbstractAdminController
     public function calendarAction()
     {
         $calendarId = $this->params()->fromRoute('id');
+
+        /** @var EventCalendarSelector $selector */
+        $selector = $this->getSelector('Calendar42\EventCalendar');
+        $events = $selector->setCalendarIds($calendarId)
+            ->setCrudUrls(true)
+            ->setIcal(true)
+            ->getResult();
+
         $calendar = null;
 
         if ($calendarId) {
             $result = $this->getTableGateway('Calendar42\Calendar')->selectByPrimary($calendarId);
             $calendar = $result;
         }
-
-        $events = $this->eventsAction();
 
         return [
             'events'   => $events,
@@ -100,24 +106,31 @@ class CalendarController extends AbstractAdminController
             ->setIcal(true)
             ->getResult();
 
-        //$events = json_encode($events);
-        var_dump($events);
-        die();
+        $ical = $events['ical'];
+
+        //var_dump($events);
+        //die();
+
+        if($this->params()->fromRoute('id')) {
+            $filename = 'events-calendar-'.$this->params()->fromRoute('id').'.ics';
+        } else {
+            $filename = 'events-all-calendars.ics';
+        }
 
         $headers = new Headers;
-        //$headers->addHeaders(
-        //    [
-        //        //'Content-Disposition' => 'attachment; filename="' . $cmd->getFileName() . '"',
-        //        //'Content-Type'        => 'application/octet-stream',
-        //        //'Content-Length'      => strlen($cmd->getOutput()),
-        //        'Expires'             => '@0', // @0, because zf2 parses date as string to \DateTime() object
-        //        'Cache-Control'       => 'must-revalidate',
-        //        'Pragma'              => 'public'
-        //    ]
-        //);
+        $headers->addHeaders(
+            [
+                'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+                'Content-Type'        => 'text/calendar; charset=utf-8',
+                'Content-Length'      => strlen($ical),
+                //'Expires'             => '@0', // @0, because zf2 parses date as string to \DateTime() object
+                //'Cache-Control'       => 'must-revalidate',
+                //'Pragma'              => 'public'
+            ]
+        );
 
         $response = new Response;
-        $response->setContent($events);
+        $response->setContent($ical);
         $response->setHeaders($headers);
 
         return $response;

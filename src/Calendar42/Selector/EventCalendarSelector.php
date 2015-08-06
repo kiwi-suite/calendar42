@@ -9,6 +9,7 @@ use Core42\Selector\AbstractDatabaseSelector;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Json\Json;
+use Zend\View\Helper\ServerUrl;
 use Zend\View\Helper\Url;
 
 class EventCalendarSelector extends AbstractDatabaseSelector
@@ -34,6 +35,10 @@ class EventCalendarSelector extends AbstractDatabaseSelector
      */
     public function setCalendarIds($calendarIds)
     {
+        if(empty($calendarIds)) {
+            return $this;
+        }
+
         if (!is_array($calendarIds)) {
             $calendarIds = [$calendarIds];
         }
@@ -104,15 +109,29 @@ class EventCalendarSelector extends AbstractDatabaseSelector
         $sql = new Sql($this->getServiceManager()->get('Db\Master'));
         $statement = $sql->prepareStatementForSqlObject($this->getSelect());
         $result = $statement->execute();
+
         foreach ($result as $eventData) {
 
             $event = new Event;
             $event->exchangeArray($hydrator->hydrateArray($eventData));
 
-            $event->setStart($event->getStart()->format('Y-m-d H:i:sP'));
+            // TODO: correct end before start date - fullcalendar will display, ical not
+            // TODO: correct end before start date - fullcalendar will display, ical not
 
-            if ($event->getEnd()) {
-                $event->setEnd($event->getEnd()->format('Y-m-d H:i:sP'));
+            $start = $event->getStart();
+            $end = $event->getEnd();
+
+            // all-day events should have added one day each
+            //if($event->getAllDay()) {
+            //    if($end) {
+            //        $end->modify('+1 day');
+            //    }
+            //}
+
+            $event->setStart($start->format('Y-m-d H:i:sP'));
+
+            if ($end) {
+                $event->setEnd($end->format('Y-m-d H:i:sP'));
             }
 
             $eventExt = [
@@ -154,10 +173,34 @@ class EventCalendarSelector extends AbstractDatabaseSelector
             $events[] = array_merge($event, $eventExt);
         }
 
-        return [
+        $result = [
             'events'    => $events,
             'calendars' => $calendars,
         ];
+
+        if($this->ical) {
+
+            /** @var ServerUrl $serverUrlHelper */
+            $serverUrlHelper = $this->getServiceManager()->get('viewHelperManager')->get('server_url');
+
+            $vCalendar = new \Eluceo\iCal\Component\Calendar($serverUrlHelper->getHost());
+            foreach($events as $event) {
+                $vEvent = new \Eluceo\iCal\Component\Event();
+                $start = new \DateTime($event['start']);
+                // always have an end date - otherwise event could be truncated if end is on same day
+                $end = $event['end'] ? new \DateTime($event['end']) : $start;
+                $vEvent
+                    ->setDtStart($start)
+                    ->setDtEnd($end)
+                    //->setNoTime($event['allDay'])
+                    ->setSummary($event['title'])
+                ;
+                $vCalendar->addComponent($vEvent);
+            }
+            $result['ical'] = $vCalendar->render();
+        }
+
+        return $result;
     }
 
     /**
@@ -170,7 +213,7 @@ class EventCalendarSelector extends AbstractDatabaseSelector
 
         $select->from($this->getTableGateway('Calendar42\Event')->getTable());
 
-        if ($this->calendarIds) {
+        if (!empty($this->calendarIds)) {
             $select->where(['calendarId' => $this->calendarIds]);
         }
 

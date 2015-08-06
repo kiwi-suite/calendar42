@@ -18,15 +18,6 @@ return [
                         ],
                         'may_terminate' => true,
                         'child_routes'  => [
-                            'ical' => [
-                                'type'    => 'Zend\Mvc\Router\Http\Segment',
-                                'options' => [
-                                    'route'    => ':id/ical/',
-                                    'defaults' => [
-                                        'action' => 'ical'
-                                    ],
-                                ],
-                            ],
                             'calendar' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
                                 'options' => [
@@ -35,6 +26,28 @@ return [
                                         'action' => 'calendar'
                                     ],
                                 ],
+                                'may_terminate' => true,
+                                'child_routes'  => [
+                                    'ical' => [
+                                        'type'    => 'Zend\Mvc\Router\Http\Segment',
+                                        'options' => [
+                                            'route'    => 'ical/',
+                                            'defaults' => [
+                                                'action' => 'ical'
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            'ical' => [
+                                'type'    => 'Zend\Mvc\Router\Http\Literal',
+                                'options' => [
+                                    'route'    => 'ical/',
+                                    'defaults' => [
+                                        'action' => 'ical'
+                                    ],
+                                ],
+                                'may_terminate' => true,
                             ],
                             'events' => [
                                 'type'    => 'Zend\Mvc\Router\Http\Segment',
