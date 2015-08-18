@@ -3,13 +3,13 @@ namespace Calendar42\TableGateway;
 
 use Core42\Db\TableGateway\AbstractTableGateway;
 
-class CalendarTableGateway extends AbstractTableGateway
+class EventTableGateway extends AbstractTableGateway
 {
 
     /**
      * @var string
      */
-    protected $table = 'calendar42_calendar';
+    protected $table = 'calendar42_event';
 
     /**
      * @var array
@@ -19,7 +19,7 @@ class CalendarTableGateway extends AbstractTableGateway
     /**
      * @var string
      */
-    protected $modelPrototype = 'Calendar42\\Model\\Calendar';
+    protected $modelPrototype = 'Calendar42\\Model\\Event';
 
 
 }

@@ -1,7 +1,7 @@
 <div class="wrapper-md bg-white b-b box-shadow">
     <h1 class="m-n font-thin h3">
         <span class="fa fa-calendar"></span>
-        <?= $this->translate('title.calendar', 'admin') ?>
+        <?= $this->translate('title.event', 'admin') ?>
     </h1>
 </div>
 
@@ -11,13 +11,13 @@
             <form class="form-horizontal" role="form" action="<?= $this->url(null, [], [], true) ?>" method="post">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <?php if ($this->calendar): ?>
+                        <?php if ($this->event): ?>
                             <span class="panel-title">
-                                <?= $this->calendar->getTitle() ?>
+                                <?= $this->event->getTitle() ?>
                             </span>
                         <?php else: ?>
                             <span class="panel-title">
-                            New Calendar
+                            New Event
                         </span>
                         <?php endif ?>
                     </div>
@@ -34,10 +34,10 @@
 
                                 <?php if ($this->params()->fromRoute('isEditMode') == true): ?>
                                     <delete
-                                        url="<?= $this->url('admin/calendar/delete') ?>"
-                                        title="<?= $this->translate("calendar.modal.delete.title", "admin") ?>"
-                                        content="<?= $this->translate("calendar.modal.delete.content", "admin") ?>"
-                                        request-id="<?= $this->calendar->getId() ?>"
+                                        url="<?= $this->url('admin/event/delete') ?>"
+                                        title="<?= $this->translate("event.modal.delete.title", "admin") ?>"
+                                        content="<?= $this->translate("event.modal.delete.content", "admin") ?>"
+                                        request-id="<?= $this->event->getId() ?>"
                                         >
                                     </delete>
                                 <?php endif; ?>
@@ -49,3 +49,4 @@
         </div>
     </div>
 </div>
+

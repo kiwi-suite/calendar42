@@ -1,15 +1,33 @@
 <?php
-/**
- * calendar42 (www.raum42.at)
- *
- * @link      http://www.raum42.at
- * @copyright Copyright (c) 2010-2014 raum42 OG (http://www.raum42.at)
- *
- */
 namespace Calendar42\Model;
 
 use Core42\Model\AbstractModel;
 
+/**
+ * @method Calendar setId() setId(int $id)
+ * @method int getId() getId()
+ * @method Calendar setTitle() setTitle(string $title)
+ * @method string getTitle() getTitle()
+ * @method Calendar setSettings() setSettings(string $settings)
+ * @method string getSettings() getSettings()
+ * @method Calendar setUpdated() setUpdated(\DateTime $updated)
+ * @method \DateTime getUpdated() getUpdated()
+ * @method Calendar setCreated() setCreated(\DateTime $created)
+ * @method \DateTime getCreated() getCreated()
+ */
 class Calendar extends AbstractModel
 {
+
+    /**
+     * @var array
+     */
+    protected $properties = array(
+        'id',
+        'title',
+        'settings',
+        'updated',
+        'created',
+    );
+
+
 }
