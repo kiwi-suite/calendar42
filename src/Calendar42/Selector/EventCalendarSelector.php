@@ -8,6 +8,7 @@ use Core42\Hydrator\DatabaseHydrator;
 use Core42\Selector\AbstractDatabaseSelector;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Where;
 use Zend\Json\Json;
 use Zend\View\Helper\ServerUrl;
 use Zend\View\Helper\Url;
@@ -28,6 +29,21 @@ class EventCalendarSelector extends AbstractDatabaseSelector
      * @var bool
      */
     protected $ical;
+
+    /**
+     * @var int
+     */
+    protected $limit;
+
+    /**
+     * @var bool
+     */
+    protected $includePast = true;
+
+    /**
+     * @var string
+     */
+    protected $order = 'start ASC';
 
     /**
      * @param $calendarIds
@@ -65,6 +81,39 @@ class EventCalendarSelector extends AbstractDatabaseSelector
     public function setIcal($ical)
     {
         $this->ical = $ical;
+
+        return $this;
+    }
+
+    /**
+     * @param $limit
+     * @return $this
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * @param $includePast
+     * @return $this
+     */
+    public function setIncludePast($includePast)
+    {
+        $this->includePast = $includePast;
+
+        return $this;
+    }
+
+    /**
+     * @param $order
+     * @return $this
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
 
         return $this;
     }
@@ -217,7 +266,18 @@ class EventCalendarSelector extends AbstractDatabaseSelector
             $select->where(['calendarId' => $this->calendarIds]);
         }
 
-        $select->order('start ASC');
+        if ($this->includePast === false) {
+            $select->where(function(Where $where) {
+                $now = new \DateTime();
+                $where->greaterThanOrEqualTo('start', $now->format('Y-m-d H:i:s'));
+            });
+        }
+
+        if ($this->limit !== null) {
+            $select->limit($this->limit);
+        }
+
+        $select->order($this->order);
 
         return $select;
     }

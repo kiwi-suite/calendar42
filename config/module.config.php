@@ -14,9 +14,16 @@ return [
         ],
     ],
 
+    'view_helpers' => [
+        'factories' => [
+            'calendar'          => 'Calendar42\View\Helper\Service\CalendarFactory',
+        ],
+    ],
+
     'form_elements' => [
         'factories' => [
-            'calendar' => 'Calendar42\FormElements\Service\CalendarFactory',
+            'calendar'      => 'Calendar42\FormElements\Service\CalendarFactory',
+            'multiCalendar' => 'Calendar42\FormElements\Service\MultiCalendarFactory',
         ],
     ],
 ];
