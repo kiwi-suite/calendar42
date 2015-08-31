@@ -1,0 +1,193 @@
+<div class="wrapper-md bg-white b-b box-shadow">
+    <h1 class="m-n font-thin h3">
+        <span class="fa fa-calendar"></span> <?= $this->translate('title.calendar', 'admin') ?>
+    </h1>
+</div>
+
+<?php
+$jsonDataId = uniqid('calendar/events/') . '.json';
+$this->admin()->addJsonTemplate($jsonDataId, $events);
+?>
+
+<div class="wrapper-md"
+     ng-controller="CalendarController"
+     data-json-data-id="<?= $jsonDataId ?>"
+     data-list-url="<?= /*$this->url('admin/calendar/list')*/
+     '' ?>"
+     data-active-locale="<?= $this->localization()->getDefaultLocale() ?>"
+    >
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+
+            <span class="panel-title">
+                <?php if ($this->calendar): ?>
+                    <?php $settings = json_decode($this->calendar->getSettings())?>
+                    <?php if(!is_null($settings->color)): ?>
+                        <span class="fa fa-square" style="color: <?= $settings->color ?>;"></span> <?= $this->calendar->getTitle() ?>
+                    <?php else: ?>
+                        <span class="fa fa-square text-primary"></span> <?= $this->calendar->getTitle() ?>
+                    <?php endif ?>
+                <?php else: ?>
+                    All Events
+                <?php endif ?>
+                <a class="btn btn-xs btn-default" href="<?= $this->url('admin/calendar') ?>">
+                    <i class="fa fa-bars"></i> Show All Events
+                </a>
+                <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
+                    <i class="fa fa-bars"></i> <?= $this->translate('button.calendar-list', 'admin') ?>
+                </a>
+                <?php if ($this->calendar): ?>
+                    <a href="<?= $this->url('admin/calendar/calendar/ical', ['id' => $this->calendar->getId()]) ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
+                        <i class="fa fa-download"></i> <?= $this->translate('button.calendar-ical', 'admin') ?>
+                    </a>
+                <?php else: ?>
+                    <a href="<?= $this->url('admin/calendar/ical') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
+                        <i class="fa fa-download"></i> <?= $this->translate('button.calendar-ical', 'admin') ?>
+                    </a>
+                <?php endif ?>
+            </span>
+
+            <div class="pull-right">
+                <?php /*
+                    <button type="button" tooltip="Double click on calendar day to create event"
+                            class="btn btn-sm btn-primary btn-addon" ng-click="addEvent()">
+                        <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
+                    </button>
+
+                    <button type="button" class="btn btn-sm btn-default m-r-xs" ui-toggle-class="show"
+                            target="#eventList">
+                        <i class="fa fa-bars"></i> <?= $this->translate('button.event-list', 'admin') ?>
+                    </button>
+                    */ ?>
+
+                <button type="button" class="btn btn-xs btn-default" ng-click="today()">
+                    <?= $this->translate('button.today', 'admin') ?>
+                </button>
+
+                <div class="btn-group btn-group-xs m-l-xs">
+                    <button class="btn btn-sm btn-default"
+                            ng-click="changeView('agendaDay')"><?= $this->translate(
+                            'button.day', 'admin'
+                        ) ?></button>
+                    <button class="btn btn-sm btn-default"
+                            ng-click="changeView('agendaWeek')"><?= $this->translate(
+                            'button.week', 'admin'
+                        ) ?></button>
+                    <button class="btn btn-sm btn-default" ng-click="changeView('month')"><?= $this->translate(
+                            'button.month', 'admin'
+                        ) ?></button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="hbox hbox-auto-xs hbox-auto-sm">
+            <div class="col wrapper-md">
+
+                <!--<ul class="nav nav-tabs" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude="">-->
+                <!--    <li ng-class="{active: active, disabled: disabled}" select="renderCalender('myCalendar1');" class="ng-isolate-scope active">-->
+                <!--        <a ng-click="select()" tab-heading-transclude="" class="ng-binding"><tab-heading class="ng-scope">-->
+                <!--                <i class="glyphicon glyphicon-bell"></i> Calendar One-->
+                <!--            </tab-heading></a>-->
+                <!--    </li>-->
+                <!--    <li ng-class="{active: active, disabled: disabled}" select="renderCalender('myCalendar2');" class="ng-isolate-scope">-->
+                <!--        <a ng-click="select()" tab-heading-transclude="" class="ng-binding"><tab-heading class="ng-scope">-->
+                <!--                <i class="glyphicon glyphicon-bell"></i> Calendar Two-->
+                <!--            </tab-heading></a>-->
+                <!--    </li>-->
+                <!--    <li ng-class="{active: active, disabled: disabled}" select="renderCalender('myCalendar3');" class="ng-isolate-scope">-->
+                <!--        <a ng-click="select()" tab-heading-transclude="" class="ng-binding"><tab-heading class="ng-scope">-->
+                <!--                <i class="glyphicon glyphicon-bell"></i> Calendar Three-->
+                <!--            </tab-heading></a>-->
+                <!--    </li>-->
+                <!--</ul>-->
+
+                <div class="pos-rlt">
+                    <div class="fc-overlay">
+                        <div class="panel bg-white b-a pos-rlt">
+                            <span class="arrow"></span>
+
+                            <div class="h4 font-thin m-b-sm">{{event.title}}</div>
+                            <div class="line b-b b-light"></div>
+
+                            <div>
+                                <i class="icon-calendar text-muted m-r-xs"></i> {{event.start | date:'mediumDate'}}
+                                <!--<span class="ng-hide" ng-hide="event.allDay"> {{event.start | date:'shortTime'}}</span>-->
+                                <span> {{event.start | date:'shortTime'}}</span>
+                            </div>
+                            <div class="ng-hide" ng-show="event.end">
+                                <i class="icon-clock text-muted m-r-xs"></i> {{event.end |
+                                exclusiveEndDate:'mediumDate':event.allDay}}
+                                <!--<span class="ng-hide" ng-hide="event.allDay"> {{event.end | date:'shortTime'}}</span>-->
+                                <span> {{event.end | date:'shortTime'}}</span>
+                            </div>
+
+                            <div class="ng-hide" ng-show='event.location'>
+                                <i class="icon-pointer text-muted m-r-xs"></i> {{event.location}}
+                            </div>
+                            <div class="m-t-sm">{{event.info}}</div>
+                            <div class="m-t-sm">{{event.url}}</div>
+                        </div>
+                    </div>
+                    <div class="calendar"
+                         calendar="calendar1"
+                         ng-model="eventSources"
+                         config="uiConfig.calendar"
+                         ui-calendar="uiConfig.calendar"
+                         calendar-watch-event="extraEventSignature(event)"
+                        ></div>
+                </div>
+            </div>
+            <div class="col w-md w-auto-xs dk bg-auto b-l calendar-list <?= $calendar ? '' : ''//'hide' ?>" id="eventList">
+                <div class="wrapper">
+                    <div ng-repeat="event in events | orderBy:'startTimestamp'"
+                         class="bg-white-only r r-2x m-b-xs wrapper-sm b-l b-l-2x event {{event.className[0]}}"
+                         style="{{event.listStyle}}" ng-click="eventClick(event)">
+
+                        <!--<input ng-model="event.title" class="form-control m-t-n-xs no-border no-padder no-bg">-->
+                        <span class="m-t-n-xs no-border no-padder no-bg">{{event.title}}</span>
+
+                        <?php /*
+                        <div class="pull-right">
+                            <a class="text-xs text-muted" ng-click="eventClick(event)">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                            <delete
+                                url="<?= $this->url('admin/event/delete') ?>"
+                                title="<?= $this->translate("event.modal.delete.title", "admin") ?>"
+                                size="xs"
+                                content="<?= $this->translate("event.modal.delete.content", "admin") ?>"
+                                request-id="{{event.id}}"
+                                >
+                            </delete>
+                        </div>
+                        */?>
+
+                        <div class="text-xs text-muted" ng-show="event.location">
+                            {{event.location}}
+                        </div>
+
+                        <div class="text-xs text-muted">
+                            {{event.start | date:'mediumDate':'+0200'}}<span> {{event.start | date:'shortTime'}}</span>
+                            <!--<span class="ng-hide" ng-hide="event.allDay"> {{event.start | date:'shortTime'}}</span>-->
+                            <span ng-show="event.end"> - {{event.end | exclusiveEndDate:'mediumDate':event.allDay}}
+                                <!--<span class="ng-hide" ng-hide="event.allDay"> {{event.end | date:'shortTime'}}</span>-->
+                                <span> {{event.end | date:'shortTime'}}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php //var_dump($events['ical']); ?>
+        </div>
+
+        <div class="panel-footer">
+            <a href="<?= $this->url('admin/event/add') ?><?= $calendar ? '?calendarId=' . $calendar->getId() : '' ?>"
+               type="button" class="btn btn-default">
+                <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
+            </a>
+        </div>
+
+    </div>
+</div>
