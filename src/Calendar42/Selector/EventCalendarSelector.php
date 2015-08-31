@@ -177,9 +177,12 @@ class EventCalendarSelector extends AbstractDatabaseSelector
             //    }
             //}
 
+            $start->setTimezone(new \DateTimeZone('Europe/Vienna'));
+
             $event->setStart($start->format('Y-m-d H:i:sP'));
 
             if ($end) {
+                $end->setTimezone(new \DateTimeZone('Europe/Vienna'));
                 $event->setEnd($end->format('Y-m-d H:i:sP'));
             }
 
