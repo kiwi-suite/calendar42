@@ -16,9 +16,14 @@ use Zend\View\Helper\Url;
 class EventCalendarSelector extends AbstractDatabaseSelector
 {
     /**
-     * @var int
+     * @var array
      */
     protected $calendarIds;
+
+    /**
+     * @var array
+     */
+    protected $eventIds;
 
     /**
      * @var bool
@@ -59,6 +64,24 @@ class EventCalendarSelector extends AbstractDatabaseSelector
             $calendarIds = [$calendarIds];
         }
         $this->calendarIds = $calendarIds;
+
+        return $this;
+    }
+
+    /**
+     * @param $eventIds
+     * @return $this
+     */
+    public function setEventIds($eventIds)
+    {
+        if(empty($eventIds)) {
+            return $this;
+        }
+
+        if (!is_array($eventIds)) {
+            $eventIds = [$eventIds];
+        }
+        $this->eventIds = $eventIds;
 
         return $this;
     }
@@ -267,6 +290,10 @@ class EventCalendarSelector extends AbstractDatabaseSelector
 
         if (!empty($this->calendarIds)) {
             $select->where(['calendarId' => $this->calendarIds]);
+        }
+
+        if (!empty($this->eventIds)) {
+            $select->where(['id' => $this->eventIds]);
         }
 
         if ($this->includePast === false) {
