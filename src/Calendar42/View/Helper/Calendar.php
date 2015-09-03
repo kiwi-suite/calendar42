@@ -36,15 +36,21 @@ class Calendar extends AbstractHelper
         $calendarIds = [],
         $limit = null,
         $includePast = true,
-        $order = 'start ASC'
+        $order = 'start ASC',
+        $timezone = null
     ) {
-        return $this
+        $selector = $this
             ->eventCalendarSelector
             ->setCalendarIds($calendarIds)
             ->setLimit($limit)
             ->setOrder($order)
-            ->setIncludePast($includePast)
-            ->getResult();
+            ->setIncludePast($includePast);
+
+        if ($timezone !== null) {
+            $selector->setTimezone($timezone);
+        }
+
+        return $selector->getResult();
     }
 
 }

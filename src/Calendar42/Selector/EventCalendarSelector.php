@@ -51,6 +51,11 @@ class EventCalendarSelector extends AbstractDatabaseSelector
     protected $order = 'start ASC';
 
     /**
+     * @var string
+     */
+    protected $timezone;
+
+    /**
      * @param $calendarIds
      * @return $this
      */
@@ -142,6 +147,16 @@ class EventCalendarSelector extends AbstractDatabaseSelector
     }
 
     /**
+     * @param $timezone
+     */
+    public function setTimezone($timezone)
+    {
+        $this->timezone = $timezone;
+
+        return;
+    }
+
+    /**
      * @return mixed
      */
     public function getResult()
@@ -200,12 +215,15 @@ class EventCalendarSelector extends AbstractDatabaseSelector
             //    }
             //}
 
-            $start->setTimezone(new \DateTimeZone('Europe/Vienna'));
-
+            if (!empty($this->timezone)) {
+                $start->setTimezone(new \DateTimeZone('Europe/Vienna'));
+            }
             $event->setStart($start->format('Y-m-d H:i:sP'));
 
             if ($end) {
-                $end->setTimezone(new \DateTimeZone('Europe/Vienna'));
+                if (!empty($this->timezone)) {
+                    $end->setTimezone(new \DateTimeZone('Europe/Vienna'));
+                }
                 $event->setEnd($end->format('Y-m-d H:i:sP'));
             }
 
