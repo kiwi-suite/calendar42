@@ -21,7 +21,11 @@ class CalendarFactory implements FactoryInterface
             ->get('Selector')
             ->get('Calendar42\EventCalendar');
 
+        $tableGateway = $serviceManager
+            ->get('TableGateway')
+            ->get('Calendar42\Calendar');
 
-        return new Calendar($selector);
+
+        return new Calendar($selector, $tableGateway);
     }
 }
