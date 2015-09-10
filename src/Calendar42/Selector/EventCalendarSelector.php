@@ -288,6 +288,9 @@ class EventCalendarSelector extends AbstractDatabaseSelector
                     //->setNoTime($event['allDay'])
                     ->setSummary($event['title'])
                 ;
+                if (!empty($event['location'])) {
+                    $vEvent->setLocation($event['location']);
+                }
                 $vCalendar->addComponent($vEvent);
             }
             $result['ical'] = $vCalendar->render();
