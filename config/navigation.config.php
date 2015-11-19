@@ -12,6 +12,7 @@ return [
                                 'route' => 'admin/calendar',
                                 'icon'  => 'fa fa-calendar fa-fw',
                                 'order' => 8000,
+                                'permission' => 'route/admin/calendar'
                             ],
                         ],
                     ],
