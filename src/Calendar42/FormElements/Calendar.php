@@ -13,5 +13,4 @@ use Zend\Form\Element\Select;
 
 class Calendar extends Select
 {
-
 }

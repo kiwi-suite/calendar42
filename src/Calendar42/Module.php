@@ -22,11 +22,11 @@ class Module implements ConfigProviderInterface
     public function getConfig()
     {
         return array_merge(
-            include __DIR__ . '/../../config/assets.config.php',
-            include __DIR__ . '/../../config/module.config.php',
-            include __DIR__ . '/../../config/navigation.config.php',
-            include __DIR__ . '/../../config/routing.config.php',
-            include __DIR__ . '/../../config/translation.config.php'
+            include __DIR__.'/../../config/assets.config.php',
+            include __DIR__.'/../../config/module.config.php',
+            include __DIR__.'/../../config/navigation.config.php',
+            include __DIR__.'/../../config/routing.config.php',
+            include __DIR__.'/../../config/translation.config.php'
         );
     }
 

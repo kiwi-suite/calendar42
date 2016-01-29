@@ -41,9 +41,9 @@ class EditForm extends Form
      */
     public function setFieldValues($fieldValues)
     {
-        foreach($fieldValues as $field => $value){
+        foreach ($fieldValues as $field => $value) {
             $element = $this->get($field);
-            if($element) {
+            if ($element) {
                 $element->setValue($value);
             }
         }

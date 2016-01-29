@@ -111,7 +111,7 @@ class CalendarController extends AbstractAdminController
         //var_dump($events);
         //die();
 
-        if($this->params()->fromRoute('id')) {
+        if ($this->params()->fromRoute('id')) {
             $filename = 'events-calendar-'.$this->params()->fromRoute('id').'.ics';
         } else {
             $filename = 'events-all-calendars.ics';

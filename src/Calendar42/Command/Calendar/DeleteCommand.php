@@ -9,8 +9,8 @@
 
 namespace Calendar42\Command\Calendar;
 
-use Core42\Command\AbstractCommand;
 use Calendar42\Model\Calendar;
+use Core42\Command\AbstractCommand;
 
 class DeleteCommand extends AbstractCommand
 {
@@ -41,7 +41,8 @@ class DeleteCommand extends AbstractCommand
     protected function preExecute()
     {
         if (!empty($this->calendarId)) {
-            $this->calendarModel = $this->getTableGateway('Calendar42\Calendar')->selectByPrimary((int)$this->calendarId);
+            $this->calendarModel =
+                $this->getTableGateway('Calendar42\Calendar')->selectByPrimary((int)$this->calendarId);
         }
 
         if (!($this->calendarModel instanceof Calendar)) {

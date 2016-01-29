@@ -7,7 +7,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class CalendarFactory implements FactoryInterface
 {
-
     /**
      * Create service
      *
@@ -24,7 +23,6 @@ class CalendarFactory implements FactoryInterface
         $tableGateway = $serviceManager
             ->get('TableGateway')
             ->get('Calendar42\Calendar');
-
 
         return new Calendar($selector, $tableGateway);
     }

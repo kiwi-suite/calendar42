@@ -16,7 +16,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class MultiCalendarFactory implements FactoryInterface
 {
-
     /**
      * Create service
      *
@@ -29,8 +28,8 @@ class MultiCalendarFactory implements FactoryInterface
         $tableGateway = $serviceLocator->getServiceLocator()->get('tablegateway')->get('Calendar42\Calendar');
         $result = $tableGateway->select();
         $calendars = [];
-        foreach($result as $calendar) {
-            $calendars [$calendar->getId()]= $calendar->getTitle();
+        foreach ($result as $calendar) {
+            $calendars [$calendar->getId()] = $calendar->getTitle();
         }
         $element = new MultiCheckbox();
         $element->setValueOptions($calendars);

@@ -16,7 +16,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class CalendarFactory implements FactoryInterface
 {
-
     /**
      * Create service
      *
@@ -29,8 +28,8 @@ class CalendarFactory implements FactoryInterface
         $tableGateway = $serviceLocator->getServiceLocator()->get('tablegateway')->get('Calendar42\Calendar');
         $result = $tableGateway->select();
         $calendars = [];
-        foreach($result as $calendar) {
-            $calendars [$calendar->getId()]= $calendar->getTitle();
+        foreach ($result as $calendar) {
+            $calendars [$calendar->getId()] = $calendar->getTitle();
         }
         $element = new Select();
         $element->setValueOptions($calendars);
