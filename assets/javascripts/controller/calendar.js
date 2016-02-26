@@ -293,7 +293,7 @@ angular.module('admin42')
             ];
 
             //$scope.dynEvents = {
-            //    url: 'http://localhost/skrapid/public/admin/calendar/1/events/',
+            //    url: 'http://localhost/raum42/kiwi42/public/admin/calendar/1/events/',
             //    type: 'GET',
             //    //data: {
             //    //    custom_param1: 'something',

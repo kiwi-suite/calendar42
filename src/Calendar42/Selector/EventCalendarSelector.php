@@ -61,7 +61,7 @@ class EventCalendarSelector extends AbstractDatabaseSelector
      */
     public function setCalendarIds($calendarIds)
     {
-        if(empty($calendarIds)) {
+        if (empty($calendarIds)) {
             return $this;
         }
 
@@ -79,7 +79,7 @@ class EventCalendarSelector extends AbstractDatabaseSelector
      */
     public function setEventIds($eventIds)
     {
-        if(empty($eventIds)) {
+        if (empty($eventIds)) {
             return $this;
         }
 
@@ -169,7 +169,6 @@ class EventCalendarSelector extends AbstractDatabaseSelector
 
         $linkTableGateway = $this->getTableGateway('Admin42\Link');
         $linkProvider = $this->getServiceManager()->get('Admin42\LinkProvider');
-
 
         /*
          * calendars
@@ -271,13 +270,13 @@ class EventCalendarSelector extends AbstractDatabaseSelector
             'calendars' => $calendars,
         ];
 
-        if($this->ical) {
+        if ($this->ical) {
 
             /** @var ServerUrl $serverUrlHelper */
             $serverUrlHelper = $this->getServiceManager()->get('viewHelperManager')->get('server_url');
 
             $vCalendar = new \Eluceo\iCal\Component\Calendar($serverUrlHelper->getHost());
-            foreach($events as $event) {
+            foreach ($events as $event) {
                 $vEvent = new \Eluceo\iCal\Component\Event();
                 $start = new \DateTime($event['start']);
                 // always have an end date - otherwise event could be truncated if end is on same day
@@ -286,8 +285,7 @@ class EventCalendarSelector extends AbstractDatabaseSelector
                     ->setDtStart($start)
                     ->setDtEnd($end)
                     //->setNoTime($event['allDay'])
-                    ->setSummary($event['title'])
-                ;
+                    ->setSummary($event['title']);
                 if (!empty($event['location'])) {
                     $vEvent->setLocation($event['location']);
                 }
@@ -321,7 +319,7 @@ class EventCalendarSelector extends AbstractDatabaseSelector
         }
 
         if ($this->includePast === false) {
-            $select->where(function(Where $where) {
+            $select->where(function (Where $where) {
                 $now = new \DateTime();
                 $where->greaterThanOrEqualTo('start', $now->format('Y-m-d H:i:s'));
             });

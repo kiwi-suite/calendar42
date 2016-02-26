@@ -29,11 +29,10 @@ use Core42\Model\AbstractModel;
  */
 class Event extends AbstractModel
 {
-
     /**
      * @var array
      */
-    protected $properties = array(
+    protected $properties = [
         'id',
         'calendarId',
         'title',
@@ -45,7 +44,5 @@ class Event extends AbstractModel
         'linkId',
         'updated',
         'created',
-    );
-
-
+    ];
 }

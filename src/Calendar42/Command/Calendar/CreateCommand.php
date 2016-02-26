@@ -53,11 +53,10 @@ class CreateCommand extends AbstractCommand
     {
         $this->setTitle(array_key_exists('title', $values) ? $values['title'] : null);
         $this->setSettings(json_encode([
-            'color' => array_key_exists('color', $values) ? $values['color'] : null,
+            'color'  => array_key_exists('color', $values) ? $values['color'] : null,
             'handle' => array_key_exists('handle', $values) ? $values['handle'] : null,
         ]));
     }
-
 
     /**
      * validate values
@@ -85,5 +84,4 @@ class CreateCommand extends AbstractCommand
 
         return $calendar;
     }
-
 }

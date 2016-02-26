@@ -123,7 +123,7 @@ class CreateCommand extends AbstractCommand
             $this->addError("title", "Title can't be empty");
         }
 
-        if(!empty($this->start)) {
+        if (!empty($this->start)) {
             // truncate timezone information to prevent mysql error
             $start = new DateTime($this->start);
             $this->start = $start->format('Y-m-d H:i:s');
@@ -131,7 +131,7 @@ class CreateCommand extends AbstractCommand
             $this->addError("start", "Start can't be empty");
         }
 
-        if(!empty($this->end)) {
+        if (!empty($this->end)) {
             // truncate timezone information to prevent mysql error
             $end = new DateTime($this->end);
             $this->end = $end->format('Y-m-d H:i:s');
@@ -163,5 +163,4 @@ class CreateCommand extends AbstractCommand
 
         return $event;
     }
-
 }

@@ -40,7 +40,7 @@ class Calendar extends AbstractHelper
 
     /**
      * @param array $calendarIds
-     * @param null $limit
+     * @param null  $limit
      * @return mixed
      */
     public function getEvents(
@@ -70,7 +70,7 @@ class Calendar extends AbstractHelper
      */
     public function getAllCalendars($orderBy = 'title ASC')
     {
-        $result = $this->calendarTableGateway->select(function (Select $select) use ($orderBy){
+        $result = $this->calendarTableGateway->select(function (Select $select) use ($orderBy) {
             if (!empty($orderBy)) {
                 $select->order($orderBy);
             }
@@ -83,5 +83,4 @@ class Calendar extends AbstractHelper
 
         return $calendars;
     }
-
 }

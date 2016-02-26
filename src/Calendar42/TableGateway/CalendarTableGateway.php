@@ -5,7 +5,6 @@ use Core42\Db\TableGateway\AbstractTableGateway;
 
 class CalendarTableGateway extends AbstractTableGateway
 {
-
     /**
      * @var string
      */
@@ -14,12 +13,10 @@ class CalendarTableGateway extends AbstractTableGateway
     /**
      * @var array
      */
-    protected $databaseTypeMap = array();
+    protected $databaseTypeMap = [];
 
     /**
      * @var string
      */
     protected $modelPrototype = 'Calendar42\\Model\\Calendar';
-
-
 }

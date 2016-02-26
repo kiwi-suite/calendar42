@@ -11,5 +11,4 @@ namespace Calendar42\Command\Calendar;
 
 abstract class AbstractCommand extends \Core42\Command\AbstractCommand
 {
-
 }

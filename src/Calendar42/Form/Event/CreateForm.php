@@ -71,7 +71,8 @@ class CreateForm extends Form
         $this->add($link);
     }
 
-    public function setCalendarId($calendarId) {
+    public function setCalendarId($calendarId)
+    {
 
         $this->get('calendarId')->setValue($calendarId);
     }

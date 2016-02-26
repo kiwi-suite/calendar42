@@ -17,17 +17,14 @@ use Core42\Model\AbstractModel;
  */
 class Calendar extends AbstractModel
 {
-
     /**
      * @var array
      */
-    protected $properties = array(
+    protected $properties = [
         'id',
         'title',
         'settings',
         'updated',
         'created',
-    );
-
-
+    ];
 }
