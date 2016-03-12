@@ -32,7 +32,7 @@
                                     <?= $this->translate('button.save', 'admin') ?>
                                 </button>
 
-                                <?php if ($this->params()->fromRoute('isEditMode') == true): ?>
+                                <?php if ($this->params()->fromRoute('isEditMode') == true && $this->permission('admin42')->isGranted('route/admin/event/delete')): ?>
                                     <delete
                                         url="<?= $this->url('admin/event/delete') ?>"
                                         title="<?= $this->translate("event.modal.delete.title", "admin") ?>"
