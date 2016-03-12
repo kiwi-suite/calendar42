@@ -139,7 +139,7 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                         ></div>
                 </div>
             </div>
-            <div class="col w-md w-auto-xs dk bg-auto b-l calendar-list <?= $calendar ? '' : ''//'hide' ?>" id="eventList">
+            <div class="col w-md w-auto-xs dk bg-auto calendar-list <?= $calendar ? '' : ''//'hide' ?>" id="eventList">
                 <div class="wrapper">
                     <div ng-repeat="event in events | orderBy:'startTimestamp'"
                          class="bg-white-only r r-2x m-b-xs wrapper-sm b-l b-l-2x event {{event.className[0]}}"
