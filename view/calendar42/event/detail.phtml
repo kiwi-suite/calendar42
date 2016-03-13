@@ -27,10 +27,7 @@
                     <div class="panel-footer">
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-md-10">
-                                <button type="submit" class="btn btn-primary">
-                                    <span class="fa fa-save"></span>
-                                    <?= $this->translate('button.save', 'admin') ?>
-                                </button>
+                                <submit submit-text="<?= $this->translate('button.save', 'admin') ?>"></submit>
 
                                 <?php if ($this->params()->fromRoute('isEditMode') == true && $this->permission('admin42')->isGranted('route/admin/event/delete')): ?>
                                     <delete
