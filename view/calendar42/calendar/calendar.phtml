@@ -31,9 +31,11 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                 <?php else: ?>
                     All Events
                 <?php endif ?>
+                <?php if($this->permission('admin42')->isGranted('route/admin/calendar')): ?>
                 <a class="btn btn-xs btn-default" href="<?= $this->url('admin/calendar') ?>">
                     <i class="fa fa-bars"></i> Show All Events
                 </a>
+                <?php endif; ?>
                 <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
                     <i class="fa fa-bars"></i> <?= $this->translate('button.calendar-list', 'admin') ?>
                 </a>
@@ -84,24 +86,6 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
 
         <div class="hbox hbox-auto-xs hbox-auto-sm">
             <div class="col wrapper-md">
-
-                <!--<ul class="nav nav-tabs" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude="">-->
-                <!--    <li ng-class="{active: active, disabled: disabled}" select="renderCalender('myCalendar1');" class="ng-isolate-scope active">-->
-                <!--        <a ng-click="select()" tab-heading-transclude="" class="ng-binding"><tab-heading class="ng-scope">-->
-                <!--                <i class="glyphicon glyphicon-bell"></i> Calendar One-->
-                <!--            </tab-heading></a>-->
-                <!--    </li>-->
-                <!--    <li ng-class="{active: active, disabled: disabled}" select="renderCalender('myCalendar2');" class="ng-isolate-scope">-->
-                <!--        <a ng-click="select()" tab-heading-transclude="" class="ng-binding"><tab-heading class="ng-scope">-->
-                <!--                <i class="glyphicon glyphicon-bell"></i> Calendar Two-->
-                <!--            </tab-heading></a>-->
-                <!--    </li>-->
-                <!--    <li ng-class="{active: active, disabled: disabled}" select="renderCalender('myCalendar3');" class="ng-isolate-scope">-->
-                <!--        <a ng-click="select()" tab-heading-transclude="" class="ng-binding"><tab-heading class="ng-scope">-->
-                <!--                <i class="glyphicon glyphicon-bell"></i> Calendar Three-->
-                <!--            </tab-heading></a>-->
-                <!--    </li>-->
-                <!--</ul>-->
 
                 <div class="pos-rlt">
                     <div class="fc-overlay">
@@ -183,10 +167,12 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
         </div>
 
         <div class="panel-footer">
+            <?php if($this->permission('admin42')->isGranted('route/admin/event/add')): ?>
             <a href="<?= $this->url('admin/event/add') ?><?= $calendar ? '?calendarId=' . $calendar->getId() : '' ?>"
                type="button" class="btn btn-default">
                 <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
             </a>
+            <?php endif; ?>
         </div>
 
     </div>
