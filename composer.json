@@ -1,14 +1,31 @@
 {
     "name": "fruit42/calendar42",
-    "type": "zend-module",
+    "description": "calendar42",
+    "license": "MIT",
+    "type": "project",
+    "keywords": [
+        "fruit42",
+        "kiwi42",
+        "cms"
+    ],
+    "homepage": "https://www.raum42.at/",
     "require": {
-        "php": ">=5.5",
-	"fruit42/core42": "2.0.*",
+        "php": "^5.6 || ^7.0",
+        "fruit42/core42": "^4.0",
+        "fruit42/admin42": "^4.0",
         "eluceo/ical": "0.8.0"
     },
+    "require-dev": {
+        "zendframework/zend-test": "^3.0"
+    },
     "autoload": {
-        "psr-0": {
-            "Calendar42": "src/"
+        "psr-4": {
+            "Calendar42\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Calendar42Test\\": "src/"
         }
     }
 }
