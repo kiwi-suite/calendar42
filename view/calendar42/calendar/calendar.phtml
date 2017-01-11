@@ -6,7 +6,7 @@
 
 <?php
 $jsonDataId = uniqid('calendar/events/') . '.json';
-$this->admin()->addJsonTemplate($jsonDataId, $events);
+//$this->admin()->addJsonTemplate($jsonDataId, $events);
 ?>
 
 <div class="wrapper-md"
@@ -31,11 +31,15 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
                 <?php else: ?>
                     All Events
                 <?php endif ?>
-                <?php if($this->permission('admin42')->isGranted('route/admin/calendar')): ?>
-                <a class="btn btn-xs btn-default" href="<?= $this->url('admin/calendar') ?>">
-                    <i class="fa fa-bars"></i> Show All Events
-                </a>
-                <?php endif; ?>
+                <?php
+                /*
+                if($this->permission('admin42')->isGranted('route/admin/calendar')): ?>
+                <!--<a class="btn btn-xs btn-default" href="--><?//= $this->url('admin/calendar') ?><!--">-->
+                <!--    <i class="fa fa-bars"></i> Show All Events-->
+                <!--</a>-->
+                <?php endif;
+                */
+                ?>
                 <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
                     <i class="fa fa-bars"></i> <?= $this->translate('button.calendar-list', 'admin') ?>
                 </a>
@@ -167,12 +171,16 @@ $this->admin()->addJsonTemplate($jsonDataId, $events);
         </div>
 
         <div class="panel-footer">
-            <?php if($this->permission('admin42')->isGranted('route/admin/event/add')): ?>
+            <?php
+            /*
+            if($this->permission('admin42')->isGranted('route/admin/event/add')): ?>
             <a href="<?= $this->url('admin/event/add') ?><?= $calendar ? '?calendarId=' . $calendar->getId() : '' ?>"
                type="button" class="btn btn-default">
                 <i class="fa fa-plus"></i> <?= $this->translate('button.event-add', 'admin') ?>
             </a>
-            <?php endif; ?>
+            <?php endif;
+            */
+            ?>
         </div>
 
     </div>

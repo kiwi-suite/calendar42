@@ -2,28 +2,28 @@
 namespace Calendar42;
 
 return [
-    'view_manager'  => [
+    'view_manager' => [
         'template_path_stack' => [
-            __NAMESPACE__ => __DIR__ . '/../view',
+            __NAMESPACE__ => __DIR__.'/../view',
         ],
     ],
 
-    'migration'     => [
+    'migration' => [
         'directory' => [
-            __NAMESPACE__ => __DIR__ . '/../data/migrations'
+            __NAMESPACE__ => __DIR__.'/../data/migrations'
         ],
     ],
 
     'view_helpers' => [
         'factories' => [
-            'calendar'          => 'Calendar42\View\Helper\Service\CalendarFactory',
+            'calendar' => \Calendar42\View\Helper\Service\CalendarFactory::class,
         ],
     ],
 
     'form_elements' => [
         'factories' => [
-            'calendar'      => 'Calendar42\FormElements\Service\CalendarFactory',
-            'multiCalendar' => 'Calendar42\FormElements\Service\MultiCalendarFactory',
+            'calendar'      => \Calendar42\FormElements\Service\CalendarFactory::class,
+            'multiCalendar' => \Calendar42\FormElements\Service\MultiCalendarFactory::class,
         ],
     ],
 ];

@@ -30,7 +30,7 @@ class CalendarController extends AbstractAdminController
         $calendarId = $this->params()->fromRoute('id');
 
         /** @var EventCalendarSelector $selector */
-        $selector = $this->getSelector('Calendar42\EventCalendar');
+        $selector = $this->getSelector(EventCalendarSelector::class);
         $events = $selector->setCalendarIds($calendarId)
             ->setCrudUrls(true)
             ->setIcal(true)

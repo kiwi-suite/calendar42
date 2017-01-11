@@ -1,7 +1,12 @@
 <?php
 namespace Calendar42\Selector;
 
+use Admin42\Link\LinkProvider;
+use Admin42\Link\Service\LinkProviderFactory;
+use Admin42\TableGateway\LinkTableGateway;
 use Calendar42\Model\Event;
+use Calendar42\TableGateway\CalendarTableGateway;
+use Calendar42\TableGateway\EventTableGateway;
 use Cocur\Slugify\Slugify;
 use Core42\Db\ResultSet\ResultSet;
 use Core42\Hydrator\DatabaseHydrator;
@@ -10,6 +15,7 @@ use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
 use Zend\Json\Json;
+use Zend\Mvc\Service\ViewHelperManagerFactory;
 use Zend\View\Helper\ServerUrl;
 use Zend\View\Helper\Url;
 
@@ -161,14 +167,13 @@ class EventCalendarSelector extends AbstractDatabaseSelector
      */
     public function getResult()
     {
-        /** @var DatabaseHydrator $hydrator */
-        $hydrator = $this->getTableGateway('Calendar42\Event')->getHydrator();
+        $hydrator = $this->getTableGateway(EventTableGateway::class)->getHydrator();
 
         /** @var Url $urlHelper */
-        $urlHelper = $this->getServiceManager()->get('viewHelperManager')->get('url');
+        $urlHelper = new Url();
 
-        $linkTableGateway = $this->getTableGateway('Admin42\Link');
-        $linkProvider = $this->getServiceManager()->get('Admin42\LinkProvider');
+        $linkTableGateway = $this->getTableGateway(LinkTableGateway::class);
+        $linkProvider = $this->getServiceManager()->get(LinkProvider::class);
 
         /*
          * calendars
@@ -176,7 +181,7 @@ class EventCalendarSelector extends AbstractDatabaseSelector
 
         $calendars = [];
         $slugify = new Slugify();
-        $result = $this->getTableGateway('Calendar42\Calendar')->select();
+        $result = $this->getTableGateway(CalendarTableGateway::class)->select();
         foreach ($result as $calendar) {
             $calendarSettings = json_decode($calendar->getSettings());
 
@@ -273,7 +278,7 @@ class EventCalendarSelector extends AbstractDatabaseSelector
         if ($this->ical) {
 
             /** @var ServerUrl $serverUrlHelper */
-            $serverUrlHelper = $this->getServiceManager()->get('viewHelperManager')->get('server_url');
+            $serverUrlHelper = new ServerUrl();
 
             $vCalendar = new \Eluceo\iCal\Component\Calendar($serverUrlHelper->getHost());
             foreach ($events as $event) {
@@ -308,7 +313,7 @@ class EventCalendarSelector extends AbstractDatabaseSelector
         $sql = new Sql($this->getServiceManager()->get('Db\Master'));
         $select = $sql->select();
 
-        $select->from($this->getTableGateway('Calendar42\Event')->getTable());
+        $select->from($this->getTableGateway(EventTableGateway::class)->getTable());
 
         if (!empty($this->calendarIds)) {
             $select->where(['calendarId' => $this->calendarIds]);
