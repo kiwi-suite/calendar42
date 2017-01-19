@@ -10,8 +10,9 @@
 namespace Calendar42\Command\Event;
 
 use Calendar42\Model\Event;
+use Calendar42\TableGateway\EventTableGateway;
 use Core42\Command\AbstractCommand;
-use DateTime;
+use Core42\Stdlib\DateTime;
 
 class EditCommand extends AbstractCommand
 {
@@ -137,7 +138,7 @@ class EditCommand extends AbstractCommand
     protected function preExecute()
     {
         if (!empty($this->eventId)) {
-            $this->eventModel = $this->getTableGateway('Calendar42\Event')->selectByPrimary((int)$this->eventId);
+            $this->eventModel = $this->getTableGateway(EventTableGateway::class)->selectByPrimary((int)$this->eventId);
         }
 
         if (!($this->eventModel instanceof Event)) {
@@ -175,7 +176,7 @@ class EditCommand extends AbstractCommand
      */
     protected function execute()
     {
-        $dateTime = new \DateTime();
+        $dateTime = new DateTime();
         $this->eventModel
             ->setCalendarId($this->calendarId)
             ->setTitle($this->title)
@@ -188,7 +189,7 @@ class EditCommand extends AbstractCommand
             ->setCreated($dateTime)
             ->setUpdated($dateTime);
 
-        $this->getTableGateway('Calendar42\Event')->update($this->eventModel);
+        $this->getTableGateway(EventTableGateway::class)->update($this->eventModel);
 
         return $this->eventModel;
     }

@@ -10,8 +10,9 @@
 namespace Calendar42\Command\Event;
 
 use Calendar42\Model\Event;
+use Calendar42\TableGateway\EventTableGateway;
 use Core42\Command\AbstractCommand;
-use DateTime;
+use Core42\Stdlib\DateTime;
 
 class CreateCommand extends AbstractCommand
 {
@@ -146,7 +147,7 @@ class CreateCommand extends AbstractCommand
      */
     protected function execute()
     {
-        $dateTime = new \DateTime();
+        $dateTime = new DateTime();
         $event = new Event();
         $event->setCalendarId($this->calendarId)
             ->setTitle($this->title)
@@ -159,7 +160,7 @@ class CreateCommand extends AbstractCommand
             ->setCreated($dateTime)
             ->setUpdated($dateTime);
 
-        $this->getTableGateway('Calendar42\Event')->insert($event);
+        $this->getTableGateway(EventTableGateway::class)->insert($event);
 
         return $event;
     }

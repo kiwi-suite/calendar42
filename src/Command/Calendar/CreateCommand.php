@@ -10,7 +10,9 @@
 namespace Calendar42\Command\Calendar;
 
 use Calendar42\Model\Calendar;
+use Calendar42\TableGateway\CalendarTableGateway;
 use Core42\Command\AbstractCommand;
+use Core42\Stdlib\DateTime;
 
 class CreateCommand extends AbstractCommand
 {
@@ -73,14 +75,14 @@ class CreateCommand extends AbstractCommand
      */
     protected function execute()
     {
-        $dateTime = new \DateTime();
+        $dateTime = new DateTime();
         $calendar = new Calendar();
         $calendar->setTitle($this->title)
             ->setSettings($this->settings)
             ->setCreated($dateTime)
             ->setUpdated($dateTime);
 
-        $this->getTableGateway('Calendar42\Calendar')->insert($calendar);
+        $this->getTableGateway(CalendarTableGateway::class)->insert($calendar);
 
         return $calendar;
     }

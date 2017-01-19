@@ -24,7 +24,7 @@
                         <?php $settings = json_decode($calendar->settings)?>
                         <tr>
                             <td style="vertical-align: middle">
-                                <?php if($this->permission('admin42')->isGranted('route/admin/calendar/calendar')): ?>
+                                <?php if($this->permission('admin42')->authorized('route/admin/calendar/calendar')): ?>
                                 <a href="<?= $this->url('admin/calendar/calendar', ['id' => $calendar->id]) ?>">
                                     <?php if(!is_null($settings->color)): ?>
                                         <span class="fa fa-square" style="color: <?= $settings->color ?>;"></span> <?= $calendar->title ?>
@@ -35,17 +35,17 @@
                                 <?php endif; ?>
                             </td>
                             <td class="text-right">
-                                <?php if($this->permission('admin42')->isGranted('route/admin/event/add')): ?>
+                                <?php if($this->permission('admin42')->authorized('route/admin/event/add')): ?>
                                 <a href="<?= $this->url('admin/event/add') ?>?calendarId=<?= $calendar->id ?>" class="btn btn-xs btn-default">
                                     <span class="fa fa-plus"></span> Add Event
                                 </a>
                                 <?php endif; ?>
-                                <?php if($this->permission('admin42')->isGranted('route/admin/calendar/edit')): ?>
+                                <?php if($this->permission('admin42')->authorized('route/admin/calendar/edit')): ?>
                                 <a href="<?= $this->url('admin/calendar/edit', ['id' => $calendar->id]) ?>" class="btn btn-xs btn-info">
                                     <span class="fa fa-pencil"></span>
                                 </a>
                                 <?php endif; ?>
-                                <?php if($this->permission('admin42')->isGranted('route/admin/calendar/delete')): ?>
+                                <?php if($this->permission('admin42')->authorized('route/admin/calendar/delete')): ?>
                                 <delete
                                     url="<?= $this->url('admin/calendar/delete') ?>"
                                     title="<?= $this->translate("calendar.modal.delete.title", "admin") ?>"
@@ -63,7 +63,7 @@
         </div>
 
         <div class="panel-footer">
-            <?php if($this->permission('admin42')->isGranted('route/admin/calendar/add')): ?>
+            <?php if($this->permission('admin42')->authorized('route/admin/calendar/add')): ?>
             <a href="<?= $this->url('admin/calendar/add') ?>" class="btn btn-default">
                 <i class="fa fa-plus"></i> <?= $this->translate('button.calendar-add', 'admin') ?>
             </a>

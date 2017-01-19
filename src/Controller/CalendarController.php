@@ -16,6 +16,7 @@ use Calendar42\Command\Calendar\EditCommand;
 use Calendar42\Form\Calendar\CreateForm;
 use Calendar42\Form\Calendar\EditForm;
 use Calendar42\Selector\EventCalendarSelector;
+use Calendar42\TableGateway\CalendarTableGateway;
 use Core42\View\Model\JsonModel;
 use Zend\Http\Headers;
 use Zend\Http\Response;
@@ -39,7 +40,7 @@ class CalendarController extends AbstractAdminController
         $calendar = null;
 
         if ($calendarId) {
-            $result = $this->getTableGateway('Calendar42\Calendar')->selectByPrimary($calendarId);
+            $result = $this->getTableGateway(CalendarTableGateway::class)->selectByPrimary($calendarId);
             $calendar = $result;
         }
 
@@ -56,7 +57,7 @@ class CalendarController extends AbstractAdminController
     {
         $calendars = [];
 
-        $result = $this->getTableGateway('Calendar42\Calendar')->select();
+        $result = $this->getTableGateway(CalendarTableGateway::class)->select();
 
         foreach ($result as $calendar) {
 
@@ -83,7 +84,7 @@ class CalendarController extends AbstractAdminController
     public function eventsAction()
     {
         /** @var EventCalendarSelector $selector */
-        $selector = $this->getSelector('Calendar42\EventCalendar');
+        $selector = $this->getSelector(EventCalendarSelector::class);
         $events = $selector->setCalendarIds($this->params()->fromRoute('id'))
             ->setCrudUrls(true)
             ->getResult();
@@ -101,7 +102,7 @@ class CalendarController extends AbstractAdminController
     public function icalAction()
     {
         /** @var EventCalendarSelector $selector */
-        $selector = $this->getSelector('Calendar42\EventCalendar');
+        $selector = $this->getSelector(EventCalendarSelector::class);
         $events = $selector->setCalendarIds($this->params()->fromRoute('id'))
             ->setIcal(true)
             ->getResult();
@@ -155,7 +156,7 @@ class CalendarController extends AbstractAdminController
     public function createAction()
     {
         /** @var CreateForm $form */
-        $form = $this->getForm('Calendar42\Calendar\Create');
+        $form = $this->getForm(CreateForm::class);
 
         $prg = $this->prg();
         if ($prg instanceof Response) {
@@ -164,7 +165,7 @@ class CalendarController extends AbstractAdminController
 
         if ($prg !== false) {
             /** @var CreateCommand $cmd */
-            $cmd = $this->getCommand('Calendar42\Calendar\Create');
+            $cmd = $this->getCommand(CreateCommand::class);
 
             $formCommand = $this->getFormCommand();
             $calendar = $formCommand->setForm($form)
@@ -206,7 +207,7 @@ class CalendarController extends AbstractAdminController
             return $prg;
         }
 
-        $calendar = $this->getTableGateway('Calendar42\Calendar')->selectByPrimary(
+        $calendar = $this->getTableGateway(CalendarTableGateway::class)->selectByPrimary(
             (int)$this->params()->fromRoute('id')
         );
 
@@ -215,12 +216,12 @@ class CalendarController extends AbstractAdminController
         }
 
         /** @var EditForm $form */
-        $form = $this->getForm('Calendar42\Calendar\Edit');
+        $form = $this->getForm(EditForm::class);
         $form->setData($calendar->toArray())->setFieldValues(json_decode($calendar->getSettings()));
 
         if ($prg !== false) {
             /** @var EditCommand $cmd */
-            $cmd = $this->getCommand('Calendar42\Calendar\Edit');
+            $cmd = $this->getCommand(EditCommand::class);
             $cmd->setCalendarId((int)$this->params()->fromRoute('id'));
 
             $formCommand = $this->getFormCommand();
@@ -259,7 +260,7 @@ class CalendarController extends AbstractAdminController
     public function deleteAction()
     {
         /** @var DeleteCommand $deleteCmd */
-        $deleteCmd = $this->getCommand('Calendar42\Calendar\Delete');
+        $deleteCmd = $this->getCommand(DeleteCommand::class);
 
         if ($this->getRequest()->isDelete()) {
 

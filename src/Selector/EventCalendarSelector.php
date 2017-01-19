@@ -2,20 +2,18 @@
 namespace Calendar42\Selector;
 
 use Admin42\Link\LinkProvider;
-use Admin42\Link\Service\LinkProviderFactory;
 use Admin42\TableGateway\LinkTableGateway;
 use Calendar42\Model\Event;
 use Calendar42\TableGateway\CalendarTableGateway;
 use Calendar42\TableGateway\EventTableGateway;
 use Cocur\Slugify\Slugify;
 use Core42\Db\ResultSet\ResultSet;
-use Core42\Hydrator\DatabaseHydrator;
 use Core42\Selector\AbstractDatabaseSelector;
+use Core42\Stdlib\DateTime;
+use DateTimeZone;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
-use Zend\Json\Json;
-use Zend\Mvc\Service\ViewHelperManagerFactory;
 use Zend\View\Helper\ServerUrl;
 use Zend\View\Helper\Url;
 
@@ -170,7 +168,7 @@ class EventCalendarSelector extends AbstractDatabaseSelector
         $hydrator = $this->getTableGateway(EventTableGateway::class)->getHydrator();
 
         /** @var Url $urlHelper */
-        $urlHelper = new Url();
+        $urlHelper = $this->getServiceManager()->get('ViewHelperManager')->get('Url');
 
         $linkTableGateway = $this->getTableGateway(LinkTableGateway::class);
         $linkProvider = $this->getServiceManager()->get(LinkProvider::class);
@@ -220,13 +218,13 @@ class EventCalendarSelector extends AbstractDatabaseSelector
             //}
 
             if (!empty($this->timezone)) {
-                $start->setTimezone(new \DateTimeZone('Europe/Vienna'));
+                $start->setTimezone(new DateTimeZone('Europe/Vienna'));
             }
             $event->setStart($start->format('Y-m-d H:i:sP'));
 
             if ($end) {
                 if (!empty($this->timezone)) {
-                    $end->setTimezone(new \DateTimeZone('Europe/Vienna'));
+                    $end->setTimezone(new DateTimeZone('Europe/Vienna'));
                 }
                 $event->setEnd($end->format('Y-m-d H:i:sP'));
             }
@@ -256,8 +254,7 @@ class EventCalendarSelector extends AbstractDatabaseSelector
             if ((int)$event->getLinkId() > 0) {
                 $link = $linkTableGateway->selectByPrimary($event->getLinkId());
                 if (!empty($link)) {
-                    $eventExt['link'] =
-                        $linkProvider->assemble($link->getType(), Json::decode($link->getValue(), Json::TYPE_ARRAY));
+                    $eventExt['link'] = $linkProvider->assemble($link->getType(), $link->getValue());
                 }
             }
 
@@ -278,12 +275,12 @@ class EventCalendarSelector extends AbstractDatabaseSelector
         if ($this->ical) {
 
             /** @var ServerUrl $serverUrlHelper */
-            $serverUrlHelper = new ServerUrl();
+            $serverUrlHelper = $this->getServiceManager()->get('ViewHelperManager')->get('ServerUrl');
 
             $vCalendar = new \Eluceo\iCal\Component\Calendar($serverUrlHelper->getHost());
             foreach ($events as $event) {
                 $vEvent = new \Eluceo\iCal\Component\Event();
-                $start = new \DateTime($event['start']);
+                $start = new DateTime($event['start']);
                 // always have an end date - otherwise event could be truncated if end is on same day
                 $end = $event['end'] ? new \DateTime($event['end']) : $start;
                 $vEvent
@@ -324,10 +321,12 @@ class EventCalendarSelector extends AbstractDatabaseSelector
         }
 
         if ($this->includePast === false) {
-            $select->where(function (Where $where) {
-                $now = new \DateTime();
-                $where->greaterThanOrEqualTo('start', $now->format('Y-m-d H:i:s'));
-            });
+            $select->where(
+                function (Where $where) {
+                    $now = new DateTime();
+                    $where->greaterThanOrEqualTo('start', $now->format('Y-m-d H:i:s'));
+                }
+            );
         }
 
         if ($this->limit !== null) {

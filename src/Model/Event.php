@@ -2,30 +2,31 @@
 namespace Calendar42\Model;
 
 use Core42\Model\AbstractModel;
+use Core42\Stdlib\DateTime;
 
 /**
- * @method Event setId() setId(int $id)
- * @method int getId() getId()
- * @method Event setCalendarId() setCalendarId(int $calendarId)
- * @method int getCalendarId() getCalendarId()
- * @method Event setTitle() setTitle(string $title)
- * @method string getTitle() getTitle()
- * @method Event setStart() setStart(\DateTime $start)
- * @method \DateTime getStart() getStart()
- * @method Event setEnd() setEnd(\DateTime $end)
- * @method \DateTime getEnd() getEnd()
- * @method Event setAllDay() setAllDay(boolean $allDay)
- * @method boolean getAllDay() getAllDay()
- * @method Event setLocation() setLocation(string $location)
- * @method string getLocation() getLocation()
- * @method Event setInfo() setInfo(string $info)
- * @method string getInfo() getInfo()
- * @method Event setLinkId() setLinkId(string $linkId)
- * @method string getLinkId() getLinkId()
- * @method Event setUpdated() setUpdated(\DateTime $updated)
- * @method \DateTime getUpdated() getUpdated()
- * @method Event setCreated() setCreated(\DateTime $created)
- * @method \DateTime getCreated() getCreated()
+ * @method Event setId(int $id)
+ * @method int getId()
+ * @method Event setCalendarId(int $calendarId)
+ * @method int getCalendarId()
+ * @method Event setTitle(string $title)
+ * @method string getTitle()
+ * @method Event setStart(DateTime $start)
+ * @method DateTime getStart()
+ * @method Event setEnd(DateTime $end)
+ * @method DateTime getEnd()
+ * @method Event setAllDay(boolean $allDay)
+ * @method boolean getAllDay()
+ * @method Event setLocation(string $location)
+ * @method string getLocation()
+ * @method Event setInfo(string $info)
+ * @method string getInfo()
+ * @method Event setLinkId(int $linkId)
+ * @method int getLinkId()
+ * @method Event setUpdated(DateTime $updated)
+ * @method DateTime getUpdated()
+ * @method Event setCreated(DateTime $created)
+ * @method DateTime getCreated()
  */
 class Event extends AbstractModel
 {

@@ -10,7 +10,9 @@
 namespace Calendar42\Command\Calendar;
 
 use Calendar42\Model\Calendar;
+use Calendar42\TableGateway\CalendarTableGateway;
 use Core42\Command\AbstractCommand;
+use Core42\Stdlib\DateTime;
 
 class EditCommand extends AbstractCommand
 {
@@ -86,7 +88,7 @@ class EditCommand extends AbstractCommand
     {
         if (!empty($this->calendarId)) {
             $this->calendarModel =
-                $this->getTableGateway('Calendar42\Calendar')->selectByPrimary((int)$this->calendarId);
+                $this->getTableGateway(CalendarTableGateway::class)->selectByPrimary((int)$this->calendarId);
         }
 
         if (!($this->calendarModel instanceof Calendar)) {
@@ -103,14 +105,14 @@ class EditCommand extends AbstractCommand
      */
     protected function execute()
     {
-        $dateTime = new \DateTime();
+        $dateTime = new DateTime();
 
         $this->calendarModel
             ->setTitle($this->title)
             ->setSettings($this->settings)
             ->setUpdated($dateTime);
 
-        $this->getTableGateway('Calendar42\Calendar')->update($this->calendarModel);
+        $this->getTableGateway(CalendarTableGateway::class)->update($this->calendarModel);
 
         return $this->calendarModel;
     }

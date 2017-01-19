@@ -41,28 +41,6 @@ class Module implements
         if (!$serviceManager->get(Environment::class)->is(\Admin42\Module::ENVIRONMENT_ADMIN)) {
             return;
         }
-
-        //$e->getApplication()->getEventManager()->getSharedManager()->attach(
-        //    'Zend\Mvc\Controller\AbstractController',
-        //    MvcEvent::EVENT_DISPATCH,
-        //    function ($e) {
-        //        $sm = $e->getApplication()->getServiceManager();
-        //
-        //        $viewHelperManager = $sm->get('viewHelperManager');
-        //
-        //        $headScript = $viewHelperManager->get('headScript');
-        //        $headLink = $viewHelperManager->get('headLink');
-        //        $basePath = $viewHelperManager->get('basePath');
-        //
-        //        $headScript->appendFile($basePath('/assets/admin/calendar/js/vendor.min.js'));
-        //        $headScript->appendFile($basePath('/assets/admin/calendar/js/calendar42.min.js'));
-        //        $headLink->appendStylesheet($basePath('/assets/admin/calendar/css/calendar42.min.css'));
-        //
-        //        //$formElement = $viewHelperManager->get('formElement');
-        //        //$formElement->addClass('Frontend42\FormElements\PageSelector', 'formpageselector');
-        //    },
-        //    100
-        //);
     }
 
     /**

@@ -9,14 +9,8 @@
 
 namespace Calendar42\Form\Event;
 
-use Admin42\FormElements\DateTime;
+use Admin42\FormElements\Form;
 use Admin42\FormElements\Link;
-use Calendar42\FormElements\Calendar;
-use Zend\Form\Element\Checkbox;
-use Zend\Form\Element\Csrf;
-use Zend\Form\Element\Text;
-use Zend\Form\Element\Textarea;
-use Zend\Form\Form;
 
 class CreateForm extends Form
 {
@@ -25,47 +19,71 @@ class CreateForm extends Form
      */
     public function init()
     {
-        $this->add(new Csrf('csrf'));
+        $this->add(
+            [
+                'name' => 'csrf',
+                'type' => 'csrf',
+            ]
+        );
 
-        /** @var Calendar $calendar */
         $calendar = $this->getFormFactory()->getFormElementManager()->get('calendar');
         $calendar->setName("calendarId");
         $calendar->setLabel("Calendar");
         $calendar->setAttribute("required", "required");
         $this->add($calendar);
 
-        $title = new Text('title');
-        $title->setLabel('label.title');
-        $title->setAttribute("required", "required");
-        $this->add($title);
+        $this->add(
+            [
+                'name'     => 'title',
+                'type'     => 'text',
+                'label'    => 'label.title',
+                'required' => true,
+            ]
+        );
 
-        /** @var DateTime $start */
-        $start = $this->getFormFactory()->getFormElementManager()->get('datetime');
-        $start->setName("start");
-        $start->setLabel("Start");
-        $start->setAttribute("required", "required");
-        $this->add($start);
+        $this->add(
+            [
+                'name'     => 'start',
+                'type'     => 'dateTime',
+                'label'    => 'Start',
+                'required' => true,
+            ]
+        );
 
-        /** @var DateTime $end */
-        $end = $this->getFormFactory()->getFormElementManager()->get('datetime');
-        $end->setName("end");
-        $end->setLabel("End");
-        $this->add($end);
+        $this->add(
+            [
+                'name'     => 'end',
+                'type'     => 'dateTime',
+                'label'    => 'End',
+            ]
+        );
 
-        $info = new Checkbox('allDay');
-        $info->setLabel('label.all-day');
-        $this->add($info);
+        $this->add(
+            [
+                'name'     => 'allDay',
+                'type'     => 'checkbox',
+                'label'    => 'label.all-day',
+            ]
+        );
 
-        $location = new Text('location');
-        $location->setLabel('label.location');
-        $this->add($location);
+        $this->add(
+            [
+                'name'     => 'location',
+                'type'     => 'text',
+                'label'    => 'label.location',
+            ]
+        );
 
-        $info = new TextArea('info');
-        $info->setLabel('label.info');
-        $this->add($info);
+        $this->add(
+            [
+                'name'     => 'info',
+                'type'     => 'textarea',
+                'label'    => 'label.info',
+            ]
+        );
 
         /** @var Link $link */
-        $link = $this->getFormFactory()->getFormElementManager()->get('link');
+        $link = $this->getFormFactory()->getFormElementManager()->get(Link::class);
         $link->setName("linkId");
         $link->setLabel("Link");
         $this->add($link);
@@ -73,7 +91,6 @@ class CreateForm extends Form
 
     public function setCalendarId($calendarId)
     {
-
         $this->get('calendarId')->setValue($calendarId);
     }
 }
