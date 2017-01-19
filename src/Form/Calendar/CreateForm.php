@@ -42,13 +42,13 @@ class CreateForm extends Form
             ]
         );
 
-        //$color = new Color('color');
-        //$color->setLabel('label.color');
-        //$this->add($color);
-
-        //$color = new Color('color');
-        //$color->setLabel('label.color');
-        //$this->add($color);
+        $this->add(
+            [
+                'name'  => 'color',
+                'type'  => 'text',
+                'label' => 'label.color',
+            ]
+        );
     }
 
     /**
