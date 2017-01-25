@@ -87,15 +87,15 @@ angular.module('admin42')
         };
 
         // double click to add new event
-        $scope.precision = 400;
-        $scope.lastClickTime = 0;
-        $scope.dayClick = function (date, jsEvent, view) {
-            var time = new Date().getTime();
-            if (time - $scope.lastClickTime <= $scope.precision) {
-                $scope.addEvent(moment(date));
-            }
-            $scope.lastClickTime = time;
-        };
+        // $scope.precision = 400;
+        // $scope.lastClickTime = 0;
+        // $scope.dayClick = function (date, jsEvent, view) {
+        //     var time = new Date().getTime();
+        //     if (time - $scope.lastClickTime <= $scope.precision) {
+        //         $scope.addEvent(moment(date));
+        //     }
+        //     $scope.lastClickTime = time;
+        // };
 
         $scope.uiConfig = {
             calendar: {
@@ -143,7 +143,7 @@ angular.module('admin42')
 
         $scope.addEvent = function (momentDate) {
 
-            $log.warn('open modal');
+            // $log.warn('open modal');
 
             // add event today by default
             momentDate = momentDate || moment();
@@ -212,13 +212,15 @@ angular.module('admin42')
 
         $scope.eventSources = getEventSources();
 
+        // $scope.eventSources = getTestEventSources();
+
         function getEventSources() {
 
             // fetch pre-parsed json script template
             $scope.jsonEvents = jsonCache.get($attrs.jsonDataId);
             $scope.events = $scope.jsonEvents.events;
             $scope.events.map($scope.sanitizeEventModel);
-            //console.log($scope.events);
+            console.log($scope.events);
             return [$scope.events];
         }
 

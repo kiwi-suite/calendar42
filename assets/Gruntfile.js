@@ -1,16 +1,8 @@
 module.exports = function (grunt) {
     grunt.initConfig({
         module: 'calendar42',
-        vendor_dir: 'bower_components',
+        vendor_dir: 'node_modules',
         dist: 'dist',
-
-        bower: {
-            install: {
-                options: {
-                    copy: false
-                }
-            }
-        },
 
         concurrent: {
             all: ['compile-vendor-js', 'compile-app-js', 'less:app']
@@ -27,7 +19,7 @@ module.exports = function (grunt) {
                     //'<%= vendor_dir %>/moment/min/moment-with-locales.js', // admin42
                     '<%= vendor_dir %>/angular-ui-calendar/src/calendar.js',
                     '<%= vendor_dir %>/fullcalendar/dist/fullcalendar.js',
-                    '<%= vendor_dir %>/fullcalendar/dist/lang-all.js'
+                    '<%= vendor_dir %>/fullcalendar/dist/locale-all.js'
                     //'<%= vendor_dir %>/fullcalendar/dist/gcal.js'
                 ],
                 dest: '<%= dist %>/js/vendor.js'
@@ -80,7 +72,7 @@ module.exports = function (grunt) {
 
         watch: {
             grunt: {
-                files: ['Gruntfile.js', 'bower.json'],
+                files: ['Gruntfile.js'],
                 tasks: ['default']
 
             },
@@ -95,7 +87,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('default', ['bower', 'concurrent:all']);
+    grunt.registerTask('default', ['concurrent:all']);
     grunt.registerTask('compile-vendor-js', ['concat:vendor', 'uglify:vendor', 'clean:vendorjs']);
     grunt.registerTask('compile-app-js', ['concat:app', 'uglify:app', 'clean:appjs']);
     grunt.registerTask('compile-css', ['less:app']);
