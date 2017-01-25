@@ -7,7 +7,7 @@
 
 <div class="wrapper-md">
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-8">
             <form class="form-horizontal" role="form" action="<?= $this->url(null, [], [], true) ?>" method="post">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -29,7 +29,7 @@
                             <div class="col-sm-offset-2 col-md-10">
                                 <submit submit-text="<?= $this->translate('button.save', 'admin') ?>"></submit>
 
-                                <?php if ($this->params()->fromRoute('isEditMode') == true && $this->permission('admin42')->isGranted('route/admin/event/delete')): ?>
+                                <?php if ($this->params()->fromRoute('isEditMode') == true && $this->permission('admin42')->authorized('route/admin/event/delete')): ?>
                                     <delete
                                         url="<?= $this->url('admin/event/delete') ?>"
                                         title="<?= $this->translate("event.modal.delete.title", "admin") ?>"

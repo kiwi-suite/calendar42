@@ -15,6 +15,7 @@ use Calendar42\Command\Event\DeleteCommand;
 use Calendar42\Command\Event\EditCommand;
 use Calendar42\Form\Event\CreateForm;
 use Calendar42\Form\Event\EditForm;
+use Calendar42\TableGateway\EventTableGateway;
 use Core42\View\Model\JsonModel;
 use Zend\Http\Response;
 
@@ -55,7 +56,7 @@ class EventController extends AbstractAdminController
     public function createAction()
     {
         /** @var CreateForm $form */
-        $form = $this->getForm('Calendar42\Event\Create');
+        $form = $this->getForm(CreateForm::class);
 
         $form->setCalendarId($this->params()->fromQuery('calendarId'));
 
@@ -66,7 +67,7 @@ class EventController extends AbstractAdminController
 
         if ($prg !== false) {
             /** @var CreateCommand $cmd */
-            $cmd = $this->getCommand('Calendar42\Event\Create');
+            $cmd = $this->getCommand(CreateCommand::class);
 
             $formCommand = $this->getFormCommand();
             $event = $formCommand->setForm($form)
@@ -108,7 +109,7 @@ class EventController extends AbstractAdminController
             return $prg;
         }
 
-        $event = $this->getTableGateway('Calendar42\Event')->selectByPrimary(
+        $event = $this->getTableGateway(EventTableGateway::class)->selectByPrimary(
             (int)$this->params()->fromRoute('id')
         );
 
@@ -117,12 +118,12 @@ class EventController extends AbstractAdminController
         }
 
         /** @var EditForm $form */
-        $form = $this->getForm('Calendar42\Event\Edit');
+        $form = $this->getForm(EditForm::class);
         $form->setData($event->toArray());
 
         if ($prg !== false) {
             /** @var EditCommand $cmd */
-            $cmd = $this->getCommand('Calendar42\Event\Edit');
+            $cmd = $this->getCommand(EditCommand::class);
             $cmd->setEventId((int)$this->params()->fromRoute('id'));
 
             $formCommand = $this->getFormCommand();
@@ -162,7 +163,7 @@ class EventController extends AbstractAdminController
     public function deleteAction()
     {
         /** @var DeleteCommand $deleteCmd */
-        $deleteCmd = $this->getCommand('Calendar42\Event\Delete');
+        $deleteCmd = $this->getCommand(DeleteCommand::class);
 
         if ($this->getRequest()->isDelete()) {
 

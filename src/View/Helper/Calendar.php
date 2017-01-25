@@ -20,6 +20,7 @@ class Calendar extends AbstractHelper
 
     /**
      * @param EventCalendarSelector $eventCalendarSelector
+     * @param CalendarTableGateway  $calendarTableGateway
      */
     public function __construct(
         EventCalendarSelector $eventCalendarSelector,
