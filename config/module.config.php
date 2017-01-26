@@ -19,11 +19,4 @@ return [
             'calendar' => \Calendar42\View\Helper\Service\CalendarFactory::class,
         ],
     ],
-
-    'form_elements' => [
-        'factories' => [
-            'calendar'      => \Calendar42\FormElements\Service\CalendarFactory::class,
-            'multiCalendar' => \Calendar42\FormElements\Service\MultiCalendarFactory::class,
-        ],
-    ],
 ];
