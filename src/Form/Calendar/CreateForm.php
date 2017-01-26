@@ -63,7 +63,7 @@ class CreateForm extends Form
                 if ($element) {
                     $element->setValue($value);
                 }
-            } catch(InvalidElementException $e) {
+            } catch (InvalidElementException $e) {
                 //
             }
         }
