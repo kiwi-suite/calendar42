@@ -52,33 +52,33 @@ class CreateForm extends Form
 
         $this->add(
             [
-                'name'     => 'end',
-                'type'     => 'dateTime',
-                'label'    => 'End',
+                'name'  => 'end',
+                'type'  => 'dateTime',
+                'label' => 'End',
             ]
         );
 
         $this->add(
             [
-                'name'     => 'allDay',
-                'type'     => 'checkbox',
-                'label'    => 'label.all-day',
+                'name'  => 'allDay',
+                'type'  => 'checkbox',
+                'label' => 'label.all-day',
             ]
         );
 
         $this->add(
             [
-                'name'     => 'location',
-                'type'     => 'text',
-                'label'    => 'label.location',
+                'name'  => 'location',
+                'type'  => 'text',
+                'label' => 'label.location',
             ]
         );
 
         $this->add(
             [
-                'name'     => 'info',
-                'type'     => 'textarea',
-                'label'    => 'label.info',
+                'name'  => 'info',
+                'type'  => 'textarea',
+                'label' => 'label.info',
             ]
         );
 

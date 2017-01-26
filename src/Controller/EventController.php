@@ -15,6 +15,7 @@ use Calendar42\Command\Event\DeleteCommand;
 use Calendar42\Command\Event\EditCommand;
 use Calendar42\Form\Event\CreateForm;
 use Calendar42\Form\Event\EditForm;
+use Calendar42\Model\Event;
 use Calendar42\TableGateway\EventTableGateway;
 use Core42\View\Model\JsonModel;
 use Zend\Http\Response;
@@ -109,6 +110,7 @@ class EventController extends AbstractAdminController
             return $prg;
         }
 
+        /** @var Event $event */
         $event = $this->getTableGateway(EventTableGateway::class)->selectByPrimary(
             (int)$this->params()->fromRoute('id')
         );
