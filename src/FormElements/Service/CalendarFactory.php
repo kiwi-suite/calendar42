@@ -38,7 +38,7 @@ class CalendarFactory implements FactoryInterface
         $result = $tableGateway->select();
         $calendars = [];
         foreach ($result as $calendar) {
-            $calendars [$calendar->getId()] = $calendar->getTitle();
+            $calendars[$calendar->getId()] = $calendar->getTitle();
         }
         $element = $container->get('FormElementManager')->get(Select::class);
         $element->setValueOptions($calendars);

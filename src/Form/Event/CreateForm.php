@@ -19,74 +19,63 @@ class CreateForm extends Form
      */
     public function init()
     {
-        $this->add(
-            [
-                'name' => 'csrf',
-                'type' => 'csrf',
-            ]
-        );
+        $this->add([
+            'name' => 'csrf',
+            'type' => 'csrf',
+        ]);
 
-        $calendar = $this->getFormFactory()->getFormElementManager()->get('calendar');
-        $calendar->setName("calendarId");
-        $calendar->setLabel("Calendar");
-        $calendar->setAttribute("required", "required");
-        $this->add($calendar);
+        $this->add([
+            'name'     => 'title',
+            'type'     => 'text',
+            'label'    => 'label.title',
+            'required' => true,
+        ]);
 
-        $this->add(
-            [
-                'name'     => 'title',
-                'type'     => 'text',
-                'label'    => 'label.title',
-                'required' => true,
-            ]
-        );
 
-        $this->add(
-            [
-                'name'     => 'start',
-                'type'     => 'dateTime',
-                'label'    => 'Start',
-                'required' => true,
-            ]
-        );
+        $this->add([
+            'type' => 'calendar',
+            'name' => 'calendarId',
+            'label' => 'label.calendar',
+            'required' => true,
+        ]);
 
-        $this->add(
-            [
-                'name'     => 'end',
-                'type'     => 'dateTime',
-                'label'    => 'End',
-            ]
-        );
 
-        $this->add(
-            [
-                'name'     => 'allDay',
-                'type'     => 'checkbox',
-                'label'    => 'label.all-day',
-            ]
-        );
+        $this->add([
+            'name'     => 'start',
+            'type'     => 'dateTime',
+            'label'    => 'Start',
+            'required' => true,
+        ]);
 
-        $this->add(
-            [
-                'name'     => 'location',
-                'type'     => 'text',
-                'label'    => 'label.location',
-            ]
-        );
+        $this->add([
+            'name'  => 'end',
+            'type'  => 'dateTime',
+            'label' => 'End',
+        ]);
 
-        $this->add(
-            [
-                'name'     => 'info',
-                'type'     => 'textarea',
-                'label'    => 'label.info',
-            ]
-        );
+        $this->add([
+            'name'  => 'allDay',
+            'type'  => 'checkbox',
+            'label' => 'label.all-day',
+        ]);
 
-        /** @var Link $link */
-        $link = $this->getFormFactory()->getFormElementManager()->get(Link::class);
-        $link->setName("linkId");
-        $link->setLabel("Link");
-        $this->add($link);
+        $this->add([
+            'name'  => 'location',
+            'type'  => 'text',
+            'label' => 'label.location',
+        ]);
+
+        $this->add([
+            'name'  => 'info',
+            'type'  => 'textarea',
+            'label' => 'label.info',
+        ]);
+
+        $this->add([
+            'type' => 'link',
+            'name' => "linkId",
+            'label' => 'label.link'
+        ]);
     }
 
     public function setCalendarId($calendarId)
