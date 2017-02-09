@@ -25,7 +25,7 @@ class EventTableGateway extends AbstractTableGateway
         'title'      => 'string',
         'start'      => 'dateTime',
         'end'        => 'dateTime',
-        'allDay'     => 'boolean',
+        'allDay'     => 'string',
         'location'   => 'string',
         'info'       => 'string',
         'linkId'     => 'integer',

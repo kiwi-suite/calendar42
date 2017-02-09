@@ -195,6 +195,8 @@ angular.module('admin42')
             eventModel.className = eventModel.className || [];
             eventModel.className = eventModel.className || [];
 
+            eventModel.allDay = eventModel.allDay === true || eventModel.allDay === 'true';
+
             if(eventModel.allDay) {
                 eventModel.className.push('fc-event-all-day');
                 eventModel.backgroundColor = '';

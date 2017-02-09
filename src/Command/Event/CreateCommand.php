@@ -139,7 +139,6 @@ class CreateCommand extends AbstractCommand
         }
 
         $this->end = (empty($this->end)) ? null : $this->end;
-        $this->allDay = !empty($this->allDay);
     }
 
     /**
