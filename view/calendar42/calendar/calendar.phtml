@@ -28,22 +28,22 @@ $this->angular()->addJsonTemplate($jsonDataId, $events);
                         <span class="fa fa-square text-primary"></span> <?= $this->calendar->getTitle() ?>
                     <?php endif ?>
                 <?php else: ?>
-                    All Events
+                    <?= $this->translate('title.event-list', 'admin') ?>
                 <?php endif ?>
                 <?php if($this->permission('admin42')->authorized('route/admin/calendar')): ?>
                 <a class="btn btn-xs btn-default" href="<?= $this->url('admin/calendar') ?>">
-                    <i class="fa fa-bars"></i> Show All Events
+                    <i class="fa fa-bars"></i> <?= $this->translate('button.event-list', 'admin') ?>
                 </a>
                 <?php endif; ?>
-                <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
+                <a href="<?= $this->url('admin/calendar/list') ?>" class="btn btn-xs btn-default m-l-xs">
                     <i class="fa fa-bars"></i> <?= $this->translate('button.calendar-list', 'admin') ?>
                 </a>
                 <?php if ($this->calendar): ?>
-                    <a href="<?= $this->url('admin/calendar/calendar/ical', ['id' => $this->calendar->getId()]) ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
+                    <a href="<?= $this->url('admin/calendar/calendar/ical', ['id' => $this->calendar->getId()]) ?>" class="btn btn-xs btn-default m-l-xs">
                         <i class="fa fa-download"></i> <?= $this->translate('button.calendar-ical', 'admin') ?>
                     </a>
                 <?php else: ?>
-                    <a href="<?= $this->url('admin/calendar/ical') ?>" class="btn btn-xs btn-default btn-addon m-l-xs">
+                    <a href="<?= $this->url('admin/calendar/ical') ?>" class="btn btn-xs btn-default m-l-xs">
                         <i class="fa fa-download"></i> <?= $this->translate('button.calendar-ical', 'admin') ?>
                     </a>
                 <?php endif ?>

@@ -10,9 +10,9 @@
 
         <div class="panel-heading">
             <span class="panel-title">
-                Calendars
+                <?= $this->translate("title.calendar-list", "admin") ?>
                 <a class="btn btn-xs btn-default" href="<?= $this->url('admin/calendar') ?>">
-                    <i class="fa fa-bars"></i> Show All Events
+                    <i class="fa fa-bars"></i> <?= $this->translate('button.event-list', 'admin') ?>
                 </a>
             </span>
         </div>
@@ -37,7 +37,7 @@
                             <td class="text-right">
                                 <?php if($this->permission('admin42')->authorized('route/admin/event/add')): ?>
                                 <a href="<?= $this->url('admin/event/add') ?>?calendarId=<?= $calendar->id ?>" class="btn btn-xs btn-default">
-                                    <span class="fa fa-plus"></span> Add Event
+                                    <span class="fa fa-plus"></span> <?= $this->translate('button.event-add', 'admin') ?>
                                 </a>
                                 <?php endif; ?>
                                 <?php if($this->permission('admin42')->authorized('route/admin/calendar/edit')): ?>
