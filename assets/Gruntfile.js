@@ -66,8 +66,8 @@ module.exports = function (grunt) {
         clean: {
             all: ['<%= dist %>/fonts/', '<%= dist %>/css/', '<%= dist %>/js/', '<%= dist %>/images/'],
 
-            vendorjs: ['<%= dist %>/js/vendor.js'],
-            appjs: ['<%= dist %>/js/<%= module %>.js']
+            vendor: ['<%= dist %>/js/vendor.js'],
+            app: ['<%= dist %>/js/<%= module %>.js']
         },
 
         watch: {
@@ -88,8 +88,8 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('default', ['concurrent:all']);
-    grunt.registerTask('compile-vendor-js', ['concat:vendor', 'uglify:vendor', 'clean:vendorjs']);
-    grunt.registerTask('compile-app-js', ['concat:app', 'uglify:app', 'clean:appjs']);
+    grunt.registerTask('compile-vendor-js', ['concat:vendor', 'uglify:vendor']);
+    grunt.registerTask('compile-app-js', ['concat:app', 'uglify:app']);
     grunt.registerTask('compile-css', ['less:app']);
     grunt.registerTask('clear', ['clean:all']);
     require('load-grunt-tasks')(grunt);
